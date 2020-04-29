@@ -6,7 +6,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/eduzap_logo_verysmall" />
+            android:src="@drawable/eduzap_logo_small" />
     </item>
 
 
