@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "906275897265",
+    "firebase_url": "https://eduzap-e0e7b.firebaseio.com",
+    "project_id": "eduzap-e0e7b",
+    "storage_bucket": "eduzap-e0e7b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:906275897265:android:5b7662d5fb249509200790",
+        "android_client_info": {
+          "package_name": "com.eduzap.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "906275897265-v0o4m8r3f7a3icbc7300nfkgfqvirlr1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrLA3icz70f4BbJayoA10bW377hhE8vEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "906275897265-v0o4m8r3f7a3icbc7300nfkgfqvirlr1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

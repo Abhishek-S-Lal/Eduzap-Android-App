@@ -1,35 +1,44 @@
 package com.eduzap.android.ui.home;
 
-import android.graphics.Color;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.eduzap.android.HomeActivity;
-import com.eduzap.android.MainActivity;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.home.Adapter.CoursesAdapter;
+import com.eduzap.android.ui.home.Interface.IFirebaseLoadListener;
+import com.eduzap.android.ui.home.Model.CoursesModel;
+import com.eduzap.android.ui.home.Model.SubjectsModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class HomeFragment extends Fragment {
+import dmax.dialog.SpotsDialog;
+
+public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
     private HomeViewModel homeViewModel;
+    AlertDialog dialog;
+    IFirebaseLoadListener iFirebaseLoadListener;
 
-    RecyclerView mCoursesRecyclerView;
-    CoursesAdapter mCoursesAdapter;
+    RecyclerView my_recycler_view;
 
-//    RecyclerView mSubjectsRecyclerView;
-//    SubjectsAdapter mSubjectsAdapter;
+    DatabaseReference myData;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,63 +46,57 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mCoursesRecyclerView = root.findViewById(R.id.coursesRecyclerView);
-        mCoursesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity())); //this will create recycler view in linear layout.
+        //Init
+        myData = FirebaseDatabase.getInstance().getReference("Courses");
+        dialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
+        iFirebaseLoadListener = this;
 
-        mCoursesAdapter = new CoursesAdapter(this, getCoursesList());
-        mCoursesRecyclerView.setAdapter(mCoursesAdapter);
+        //View
+        my_recycler_view = root.findViewById(R.id.coursesRecyclerView);
+        my_recycler_view.setHasFixedSize(true);
+        my_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-//        mSubjectsRecyclerView = root.findViewById(R.id.subjectsRecyclerView);
-//        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-//        mSubjectsRecyclerView.setLayoutManager(horizontalLayoutManager); //this will create recycler view in linear layout.
-//
-//        mSubjectsAdapter = new SubjectsAdapter(this, getSubjectsList());
-//        mSubjectsRecyclerView.setAdapter(mSubjectsAdapter);
+        //load data
+        getFirebaseData();
 
         return root;
     }
-    private ArrayList<CoursesModel> getCoursesList() {
 
-        ArrayList<CoursesModel> models = new ArrayList<>();
+    private void getFirebaseData() {
+        dialog.show();
+        myData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<CoursesModel> coursesModels = new ArrayList<>();
+                for (DataSnapshot groupSnapShot : dataSnapshot.getChildren()) {
+                    CoursesModel coursesModel = new CoursesModel();
+                    coursesModel.setCourseTitle(groupSnapShot.child("CourseTitle").getValue(true).toString());
+                    GenericTypeIndicator<ArrayList<SubjectsModel>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<SubjectsModel>>() {
+                    };
+                    coursesModel.setSubjectItem(groupSnapShot.child("SubjectItem").getValue(genericTypeIndicator));
+                    coursesModels.add(coursesModel);
+                }
+                iFirebaseLoadListener.onFirebaseLoadSuccess(coursesModels);
+            }
 
-        CoursesModel m = new CoursesModel();
-        m.setStreamTitle("Computer Science");
-        models.add(m);
-
-        m = new CoursesModel();
-        m.setStreamTitle("Mechanical Engineering");
-        models.add(m);
-
-        m = new CoursesModel();
-        m.setStreamTitle("Competitive Exams");
-        models.add(m);
-
-        m = new CoursesModel();
-        m.setStreamTitle("Others");
-        models.add(m);
-
-        return  models;
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                iFirebaseLoadListener.FirebaseLoadFailed(databaseError.getMessage());
+            }
+        });
     }
 
-    private ArrayList<SubjectsModel> getSubjectsList() {
+    @Override
+    public void onFirebaseLoadSuccess(List<CoursesModel> coursesModelList) {
+        CoursesAdapter adapter = new CoursesAdapter(this.getActivity(), coursesModelList);
+        my_recycler_view.setAdapter(adapter);
 
-        ArrayList<SubjectsModel> subjectList = new ArrayList<>();
+        dialog.dismiss();
+    }
 
-        SubjectsModel m = new SubjectsModel();
-        m.setSubjectTitle("C Programming");
-        m.setImg(R.drawable.eduzap_logo_verysmall);
-        subjectList.add(m);
-
-        m = new SubjectsModel();
-        m.setSubjectTitle("Data Structures");
-        m.setImg(R.drawable.eduzap_logo_verysmall);
-        subjectList.add(m);
-
-        m = new SubjectsModel();
-        m.setSubjectTitle("Database");
-        m.setImg(R.drawable.eduzap_logo_verysmall);
-        subjectList.add(m);
-
-        return  subjectList;
+    @Override
+    public void FirebaseLoadFailed(String message) {
+        Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
+        dialog.dismiss();
     }
 }
