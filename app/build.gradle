@@ -57,4 +57,3 @@ dependencies {
     // add SDKs for Firebase Authentication
     implementation 'com.google.firebase:firebase-auth:19.3.1'
 }
-
