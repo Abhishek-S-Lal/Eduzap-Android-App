@@ -165,7 +165,7 @@ public class Signup_Form extends AppCompatActivity {
                 //"(?=.*[a-z])" +         //at least 1 lower case letter
                 //"(?=.*[A-Z])" +         //at least 1 upper case letter
                 "(?=.*[a-zA-Z])" +      //any letter
-                "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                //"(?=.*[@#$%^&+=])" +    //at least 1 special character
                 "(?=\\S+$)" +           //no white spaces
                 ".{6,}" +               //at least 6 characters
                 "$";
@@ -174,7 +174,7 @@ public class Signup_Form extends AppCompatActivity {
             regPassword.setError("Field cannot be empty");
             return false;
         } else if (!val.matches(passwordVal)) {
-            regPassword.setError("Password is too weak. Please enter a password that contain atleast 1 upper case letter,1 digit and a special character.");
+            regPassword.setError("Password is too weak. Please enter a password that contain atleast 6 characters with no white spaces.");
             return false;
         } else {
             regPassword.setError(null);
