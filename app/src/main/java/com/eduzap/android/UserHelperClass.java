@@ -1,17 +1,25 @@
 package com.eduzap.android;
 
 public class UserHelperClass {
-    String name, username, email, phoneNo, password;
+    String name, username, email, phoneNo, gender;
 
     public UserHelperClass() {
     }
 
-    public UserHelperClass(String name, String username, String email, String phoneNo, String password) {
+    public UserHelperClass(String name, String username, String email, String phoneNo, String gender) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.phoneNo = phoneNo;
-        this.password = password;
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getName() {
@@ -44,13 +52,5 @@ public class UserHelperClass {
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

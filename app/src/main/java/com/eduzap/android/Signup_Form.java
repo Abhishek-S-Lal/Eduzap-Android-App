@@ -7,6 +7,8 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,15 +20,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Signup_Form extends AppCompatActivity {
 
     Button callLogIn, regBtn;
+    RadioButton radioGenderMale, radioGenderFemale;
     TextInputLayout regName, regUsername, regEmail, regPhoneNo, regPassword;
     ImageView image;
     TextView sloganText;
+    String gender = "";
+    ProgressBar progressBar;
 
     FirebaseDatabase rootNode;
     DatabaseReference reference;
@@ -46,22 +52,24 @@ public class Signup_Form extends AppCompatActivity {
         regEmail = findViewById(R.id.reg_email);
         regPhoneNo = findViewById(R.id.reg_phoneNo);
 
+        radioGenderMale = findViewById(R.id.radio_male);
+        radioGenderFemale = findViewById(R.id.radio_female);
+
         callLogIn = findViewById(R.id.reg_login_btn);
         regBtn = findViewById(R.id.reg_btn);
+
+        progressBar = findViewById(R.id.signUpProgressBar);
 
 
         //Save data in FireBase on button click
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rootNode = FirebaseDatabase.getInstance();
-                reference = rootNode.getReference("Users");
-
-                //register user in realtime database
-                registerUser(view);
+                progressBar.setVisibility(View.VISIBLE);
 
                 //register user in email authentication
                 registerEmailAuthentication(view);
+
             }
 
         });//Register Button method end
@@ -186,18 +194,27 @@ public class Signup_Form extends AppCompatActivity {
         String username = regUsername.getEditText().getText().toString();
         String email = regEmail.getEditText().getText().toString();
         String phoneNo = regPhoneNo.getEditText().getText().toString();
-        String password = regPassword.getEditText().getText().toString();
-        UserHelperClass helperClass = new UserHelperClass(name, username, email, phoneNo, password);
-        reference.child(phoneNo).setValue(helperClass);
+
+        if (radioGenderMale.isChecked()) {
+            gender = "Male";
+        }
+        if (radioGenderFemale.isChecked()) {
+            gender = "Female;";
+        }
+
+        UserHelperClass helperClass = new UserHelperClass(name, username, email, phoneNo, gender);
+        rootNode = FirebaseDatabase.getInstance();
+        reference = rootNode.getReference("Users");
+        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(helperClass);
     }
 
     //This function will add new user in e-mail authentication
-    public void registerEmailAuthentication(View view) {
+    public void registerEmailAuthentication(final View view) {
 
         String email = regEmail.getEditText().getText().toString();
         String password = regPassword.getEditText().getText().toString();
 
-        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
 
         if (!validateName() | !validatePassword() | !validatePhoneNo() | !validateEmail() | !validateUsername()) {
             return;
@@ -205,18 +222,37 @@ public class Signup_Form extends AppCompatActivity {
         mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Signup_Form.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
-
                 if (!task.isSuccessful()) {
-                    Toast.makeText(Signup_Form.this, "SignUp Unsuccessful!\n Please try again", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                        Toast.makeText(Signup_Form.this, "User Already Registered", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Signup_Form.this, "SignUp Unsuccessful!\n Please try again", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(Signup_Form.this, "SignUp Successful.\n Please log in to continue.", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Signup_Form.this, MainActivity.class));
-                    finish();
+                    //register user in realtime database
+                    registerUser(view);
+
+                    //email verification
+                    mFirebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(Signup_Form.this, "Registered Successfully.Please check your email for verification.", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(Signup_Form.this, MainActivity.class));
+                                finish();
+                            } else {
+                                Toast.makeText(Signup_Form.this, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                 }
             }
 
         });
     }
+
 
 }

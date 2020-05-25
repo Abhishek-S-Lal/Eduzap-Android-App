@@ -7,6 +7,7 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView image;
     TextView sloganText;
     TextInputLayout email, password;
+    ProgressBar progressBar;
 
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -43,19 +45,21 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.log_password);
         loginBtn = findViewById(R.id.login_btn);
 
+        progressBar = findViewById(R.id.loginProgressBar);
+
 
         //login authentication
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if (mFirebaseUser != null) {
-                    Toast.makeText(MainActivity.this, "You are logged in.", Toast.LENGTH_SHORT).show();
+                if (mFirebaseUser != null && mFirebaseAuth.getCurrentUser().isEmailVerified()) {
+                    progressBar.setVisibility(View.GONE);
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(MainActivity.this, "Please log in.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                progressBar.setVisibility(View.VISIBLE);
 //                //Extract email and password
                 String UserEmail = email.getEditText().getText().toString();
                 String UserPassword = password.getEditText().getText().toString();
@@ -83,12 +88,17 @@ public class MainActivity extends AppCompatActivity {
                     mFirebaseAuth.signInWithEmailAndPassword(UserEmail, UserPassword).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressBar.setVisibility(View.GONE);
                             if (!task.isSuccessful()) {
                                 Toast.makeText(MainActivity.this, "Login Failed! \n Please try again", Toast.LENGTH_SHORT).show();
                             } else {
-                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
+                                if (mFirebaseAuth.getCurrentUser().isEmailVerified()) {
+                                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Please verify your email to login.", Toast.LENGTH_LONG).show();
+                                }
                             }
                         }
                     });
@@ -122,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        progressBar.setVisibility(View.VISIBLE);
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 }
