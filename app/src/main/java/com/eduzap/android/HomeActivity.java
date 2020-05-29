@@ -45,13 +45,14 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_downloads, R.id.nav_notifications, R.id.nav_about_us, R.id.nav_developers, R.id.nav_contact_us)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(this, "Successfullly Signed out", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
                 return true;

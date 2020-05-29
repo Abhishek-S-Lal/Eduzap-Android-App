@@ -50,7 +50,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //Call next screen
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
                 // Attach all the elements those you want to animate in design
                 Pair[] pairs = new Pair[2];

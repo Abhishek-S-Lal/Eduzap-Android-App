@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.eduzap.android.ui.drawer.home.HomeFragment"
+        android:label="@string/drawer_first"
+        tools:layout="@layout/drawer_fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_downloads"
+        android:name="com.eduzap.android.ui.drawer.downloads.DownloadsFragment"
+        android:label="@string/drawer_second"
+        tools:layout="@layout/drawer_fragment_downloads" />
+
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="com.eduzap.android.ui.drawer.notifications.NotificationsFragment"
+        android:label="@string/drawer_third"
+        tools:layout="@layout/drawer_fragment_notifications" />
+
+    <fragment
+        android:id="@+id/nav_about_us"
+        android:name="com.eduzap.android.ui.drawer.about_us.AboutUsFragment"
+        android:label="@string/drawer_about_us"
+        tools:layout="@layout/drawer_fragment_about_us" />
+
+    <fragment
+        android:id="@+id/nav_contact_us"
+        android:name="com.eduzap.android.ui.drawer.contact_us.ContactUsFragment"
+        android:label="@string/drawer_contact_us"
+        tools:layout="@layout/drawer_fragment_contact_us" />
+
+    <fragment
+        android:id="@+id/nav_developers"
+        android:name="com.eduzap.android.ui.drawer.developers.DevelopersFragment"
+        android:label="@string/drawer_developers"
+        tools:layout="@layout/drawer_fragment_developers" />
+</navigation>

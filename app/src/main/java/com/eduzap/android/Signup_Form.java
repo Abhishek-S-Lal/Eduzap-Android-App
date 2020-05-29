@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.eduzap.android.ui.drawer.home.UserHelperClass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -77,7 +78,7 @@ public class Signup_Form extends AppCompatActivity {
         callLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Signup_Form.this, MainActivity.class);
+                Intent intent = new Intent(Signup_Form.this, LoginActivity.class);
                 Pair[] pairs = new Pair[6];
                 pairs[0] = new Pair<View, String>(image, "logo_image");
                 pairs[1] = new Pair<View, String>(sloganText, "logo_text");
@@ -240,7 +241,7 @@ public class Signup_Form extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(Signup_Form.this, "Registered Successfully.Please check your email for verification.", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(Signup_Form.this, MainActivity.class));
+                                startActivity(new Intent(Signup_Form.this, LoginActivity.class));
                                 finish();
                             } else {
                                 Toast.makeText(Signup_Form.this, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
