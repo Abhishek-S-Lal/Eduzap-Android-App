@@ -36,7 +36,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
 
         //Hooks
-        image = findViewById(R.id.imageView);
+        image = findViewById(R.id.nav_user_photo);
         slogan = findViewById(R.id.textView1);
         version = findViewById(R.id.textView2);
 
