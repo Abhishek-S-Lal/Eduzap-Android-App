@@ -91,6 +91,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         my_recycler_view.setHasFixedSize(true);
         my_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
+
         //load data
         getFirebaseData();
 

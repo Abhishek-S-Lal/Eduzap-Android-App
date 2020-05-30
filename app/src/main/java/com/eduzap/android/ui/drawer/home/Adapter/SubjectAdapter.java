@@ -1,16 +1,18 @@
 package com.eduzap.android.ui.drawer.home.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eduzap.android.LearnActivity;
 import com.eduzap.android.R;
 import com.eduzap.android.ui.drawer.home.Interface.IItemClickListener;
 import com.eduzap.android.ui.drawer.home.Model.SubjectsModel;
@@ -22,11 +24,15 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.MyViewHo
 
     private Context context;
     private List<SubjectsModel> subjectsModelList;
+    private String courseName;
+    private int coursePosition;
 
 
-    public SubjectAdapter(Context context, List<SubjectsModel> subjectsModelList) {
+    public SubjectAdapter(Context context, List<SubjectsModel> subjectsModelList, String courseName, int coursePosition) {
         this.context = context;
         this.subjectsModelList = subjectsModelList;
+        this.courseName = courseName;
+        this.coursePosition = coursePosition;
     }
 
     @NonNull
@@ -37,16 +43,32 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         holder.text_item_title.setText(subjectsModelList.get(position).getName());
         Picasso.get().load(subjectsModelList.get(position).getImage()).into(holder.image_item);
-
 
         //Don't forget to implement item click
         holder.setiItemClickListener(new IItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
-                Toast.makeText(context, "" + subjectsModelList.get(position).getName(), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(context, LearnActivity.class);
+                Bundle b = new Bundle();
+
+                //get text for current item
+                String subjectName = subjectsModelList.get(position).getName();
+                //put text into a bundle and add to intent
+                intent.putExtra("course_name", courseName);
+                intent.putExtra("subject_name", subjectName);
+
+                //get position to carry integer
+                intent.putExtra("subject_position", position);
+                intent.putExtra("course_position", coursePosition);
+
+                intent.putExtras(b);
+
+                //begin activity
+                context.startActivity(intent);
             }
         });
     }

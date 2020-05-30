@@ -37,14 +37,16 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        holder.CourseTitle.setText(dataList.get(position).getCourseTitle());
+        String courseTitle = dataList.get(position).getCourseTitle();
+        holder.CourseTitle.setText(courseTitle);
         List<SubjectsModel> itemData = dataList.get(position).getSubjectItem();
-        SubjectAdapter itemListAdapter = new SubjectAdapter(context, itemData);
+        SubjectAdapter itemListAdapter = new SubjectAdapter(context, itemData, courseTitle, position);
         holder.recyclerView_item_list.setHasFixedSize(true);
         holder.recyclerView_item_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView_item_list.setAdapter(itemListAdapter);
 
         holder.recyclerView_item_list.setNestedScrollingEnabled(false); //important
+
 
         //Button More
         holder.btn_more.setOnClickListener(new View.OnClickListener() {

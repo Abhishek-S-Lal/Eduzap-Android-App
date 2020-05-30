@@ -12,7 +12,7 @@
     <string name="bottom_nav_second">Documents</string>
     <string name="bottom_nav_third">Quiz</string>
 
-    <string name="title_activity_learn">LearnActivity</string>
+    <string name="title_activity_learn">Learn</string>
 
     <string name="drawer_first">Home</string>
     <string name="drawer_second">Downloads</string>
