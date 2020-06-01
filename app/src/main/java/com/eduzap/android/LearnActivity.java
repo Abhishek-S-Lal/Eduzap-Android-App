@@ -28,7 +28,7 @@ public class LearnActivity extends AppCompatActivity {
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        String course = getIntent().getStringExtra("course_name");
+        //String course = getIntent().getStringExtra("course_name");
         String subject = getIntent().getStringExtra("subject_name");
 
         int coursePosition = getIntent().getIntExtra("course_position", 0);

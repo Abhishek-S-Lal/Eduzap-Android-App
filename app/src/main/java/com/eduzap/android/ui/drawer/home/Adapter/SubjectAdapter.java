@@ -38,7 +38,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.MyViewHo
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.subjects, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.recycler_subjects_item, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -57,11 +57,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.MyViewHo
 
                 //get text for current item
                 String subjectName = subjectsModelList.get(position).getName();
-                //put text into a bundle and add to intent
-                intent.putExtra("course_name", courseName);
-                intent.putExtra("subject_name", subjectName);
-
+                //put extra into a bundle and add to intent
                 //get position to carry integer
+                intent.putExtra("subject_name", subjectName);
                 intent.putExtra("subject_position", position);
                 intent.putExtra("course_position", coursePosition);
 

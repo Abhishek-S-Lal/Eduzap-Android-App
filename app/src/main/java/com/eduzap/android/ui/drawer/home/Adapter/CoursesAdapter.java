@@ -31,7 +31,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.MyViewHo
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.courses, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.recycler_courses_item, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -41,11 +41,11 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.MyViewHo
         holder.CourseTitle.setText(courseTitle);
         List<SubjectsModel> itemData = dataList.get(position).getSubjectItem();
         SubjectAdapter itemListAdapter = new SubjectAdapter(context, itemData, courseTitle, position);
-        holder.recyclerView_item_list.setHasFixedSize(true);
-        holder.recyclerView_item_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-        holder.recyclerView_item_list.setAdapter(itemListAdapter);
+        holder.subjects_recyclerView_item_list.setHasFixedSize(true);
+        holder.subjects_recyclerView_item_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        holder.subjects_recyclerView_item_list.setAdapter(itemListAdapter);
 
-        holder.recyclerView_item_list.setNestedScrollingEnabled(false); //important
+        holder.subjects_recyclerView_item_list.setNestedScrollingEnabled(false); //important
 
 
         //Button More
@@ -64,14 +64,14 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView CourseTitle;
-        RecyclerView recyclerView_item_list;
+        RecyclerView subjects_recyclerView_item_list;
         Button btn_more;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             CourseTitle = itemView.findViewById(R.id.streamName);
             btn_more = itemView.findViewById(R.id.btnMore);
-            recyclerView_item_list = itemView.findViewById(R.id.subjectsRecyclerView);
+            subjects_recyclerView_item_list = itemView.findViewById(R.id.subjectsRecyclerView);
         }
     }
 }

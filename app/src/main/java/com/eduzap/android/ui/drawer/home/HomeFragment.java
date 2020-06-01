@@ -35,12 +35,11 @@ import com.smarteist.autoimageslider.SliderView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
     //AlertDialog dialog;
     IFirebaseLoadListener iFirebaseLoadListener;
-    RecyclerView my_recycler_view;
+    RecyclerView courses_recycler_view;
     ProgressBar progressBar;
     DatabaseReference myData;
     private HomeViewModel homeViewModel;
@@ -87,9 +86,9 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         iFirebaseLoadListener = this;
 
         //View
-        my_recycler_view = root.findViewById(R.id.coursesRecyclerView);
-        my_recycler_view.setHasFixedSize(true);
-        my_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        courses_recycler_view = root.findViewById(R.id.coursesRecyclerView);
+        courses_recycler_view.setHasFixedSize(true);
+        courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
 
         //load data
@@ -106,6 +105,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<CoursesModel> coursesModels = new ArrayList<>();
+
                 for (DataSnapshot groupSnapShot : dataSnapshot.getChildren()) {
                     CoursesModel coursesModel = new CoursesModel();
                     coursesModel.setCourseTitle(groupSnapShot.child("CourseTitle").getValue(true).toString());
@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
     @Override
     public void onFirebaseLoadSuccess(List<CoursesModel> coursesModelList) {
         CoursesAdapter adapter = new CoursesAdapter(this.getActivity(), coursesModelList);
-        my_recycler_view.setAdapter(adapter);
+        courses_recycler_view.setAdapter(adapter);
 
         //dialog.dismiss();
         progressBar.setVisibility(View.GONE);

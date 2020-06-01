@@ -1,14 +1,19 @@
 package com.eduzap.android.ui.drawer.home.Model;
 
+import com.eduzap.android.ui.bottom_navigation.videos.VideoListModel;
+
+import java.util.ArrayList;
+
 public class SubjectsModel {
     private String name, image;
 
     public SubjectsModel() {
     }
 
-    public SubjectsModel(String name, String image) {
+    public SubjectsModel(String name, String image, ArrayList<VideoListModel> videoItem) {
         this.name = name;
         this.image = image;
+
     }
 
     public String getName() {
