@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.eduzap.android.ui.drawer.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -25,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button callSignUp, loginBtn;
     ImageView image;
-    TextView sloganText;
+    TextView sloganText, statusMsg;
     TextInputLayout email, password;
     ProgressBar progressBar;
 
@@ -35,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         //Hooks
         callSignUp = findViewById(R.id.reg_login_btn);
@@ -44,9 +45,14 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.log_email);
         password = findViewById(R.id.log_password);
         loginBtn = findViewById(R.id.login_btn);
+        statusMsg = findViewById(R.id.status_msg);
 
         progressBar = findViewById(R.id.loginProgressBar);
 
+        int status = getIntent().getIntExtra("status", 0);
+        if (status == 1) {
+            statusMsg.setText("Email verification link sent to your registered email. Please verify it to continue.");
+        }
 
         //login authentication
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {

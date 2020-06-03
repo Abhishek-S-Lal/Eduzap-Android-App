@@ -3,6 +3,7 @@
     package="com.eduzap.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,13 +14,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".LearnActivity"
+            android:name=".ui.bottom_navigation.LearnActivity"
             android:label="@string/title_activity_learn"
-            android:parentActivityName=".HomeActivity"
+            android:parentActivityName=".ui.drawer.HomeActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value=".ui.drawer.HomeActivity" />
         </activity>
         <activity
             android:name=".SplashScreenActivity"
@@ -34,7 +35,7 @@
             android:name=".Signup_Form"
             android:label="Register" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.drawer.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

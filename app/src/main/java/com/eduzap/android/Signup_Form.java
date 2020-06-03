@@ -241,7 +241,11 @@ public class Signup_Form extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(Signup_Form.this, "Registered Successfully.Please check your email for verification.", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(Signup_Form.this, LoginActivity.class));
+                                Intent intent = new Intent(Signup_Form.this, LoginActivity.class);
+                                Bundle b = new Bundle();
+                                intent.putExtra("status", 1);
+                                intent.putExtras(b);
+                                startActivity(intent);
                                 finish();
                             } else {
                                 Toast.makeText(Signup_Form.this, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();

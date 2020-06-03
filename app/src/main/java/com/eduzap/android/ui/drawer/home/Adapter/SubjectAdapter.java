@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.eduzap.android.LearnActivity;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.bottom_navigation.LearnActivity;
 import com.eduzap.android.ui.drawer.home.Interface.IItemClickListener;
 import com.eduzap.android.ui.drawer.home.Model.SubjectsModel;
 import com.squareup.picasso.Picasso;

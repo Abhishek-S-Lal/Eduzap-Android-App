@@ -102,23 +102,22 @@
                 android:transitionName="login_signup_trans" />
 
             <TextView
+                android:id="@+id/status_msg"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="130dp"
                 android:gravity="center"
                 android:minLines="3"
                 android:text="By Signing In You Are Agreeing To EDUzap's
                 Terms of Use and Privacy Policy" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5sp"
-                android:gravity="center"
-                android:text="About Us | Contact Us"
-                android:textStyle="bold" />
 
 
         </LinearLayout>

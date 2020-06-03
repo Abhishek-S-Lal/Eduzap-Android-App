@@ -78,6 +78,12 @@ public class VideosFragment extends Fragment {
                     list.add(videoListModel);
                 }
                 adapter = new VideoListAdapter(getActivity(), list, youTubePlayerView, getLifecycle(), videoName, videoDescription);
+                if (adapter.getItemCount() == 0) {
+                    TextView emptyTextViw = root.findViewById(R.id.emptyVideosMsg);
+                    emptyTextViw.setText(R.string.empty_videos_message);
+                    emptyTextViw.setVisibility(View.VISIBLE);
+                }
+
 
                 videoRecyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);

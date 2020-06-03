@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -32,7 +31,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
     TextView videoName;
     ReadMoreTextView videoDescription;
     YouTubePlayer player;
-    Boolean ready = false;
+    int videoPosition = 0;
 
     public VideoListAdapter(Context context, ArrayList<VideoListModel> videoItem, YouTubePlayerView youTubePlayerView, Lifecycle lifecycle, TextView videoName, ReadMoreTextView videoDescription) {
         this.context = context;
@@ -61,16 +60,18 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
         holder.setiItemClickListener(new IItemClickListener() {
             @Override
             public void onItemClickListener(View view, final int position) {
-                if (ready) {
-                    videoId = videoItem.get(position).getVideoUrl();
-                    videoName.setText(videoItem.get(position).getVideoName());
-                    videoDescription.setText(videoItem.get(position).getVideoDescription());
+                videoPosition = position;
+                if (player != null) {
+                    videoId = videoItem.get(videoPosition).getVideoUrl();
+                    videoName.setText(videoItem.get(videoPosition).getVideoName());
+                    videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
                     YouTubePlayerUtils.loadOrCueVideo(
                             player, lifecycle,
                             videoId, 0f
                     );
                 } else {
-                    Toast.makeText(context, "Please try again after the video player loads", Toast.LENGTH_SHORT).show();
+                    videoName.setText(videoItem.get(videoPosition).getVideoName());
+                    videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
                 }
             }
         });
@@ -81,19 +82,19 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
         // The player will automatically pause when the fragment is stopped
         // If you don't add YouTubePlayerView as a lifecycle observer, you will have to release it manually.
 
-        videoName.setText(videoItem.get(0).getVideoName());
-        videoDescription.setText(videoItem.get(0).getVideoDescription());
+        videoName.setText(videoItem.get(videoPosition).getVideoName());
+        videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                ready = true;
                 player = youTubePlayer;
                 YouTubePlayerUtils.loadOrCueVideo(
                         youTubePlayer, lifecycle,
-                        videoItem.get(0).getVideoUrl(), 0f
+                        videoItem.get(videoPosition).getVideoUrl(), 0f
                 );
             }
         });
+
     }
 
 

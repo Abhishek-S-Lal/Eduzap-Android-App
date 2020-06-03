@@ -1,4 +1,4 @@
-package com.eduzap.android;
+package com.eduzap.android.ui.bottom_navigation;
 
 import android.os.Bundle;
 
@@ -8,6 +8,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.eduzap.android.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class LearnActivity extends AppCompatActivity {

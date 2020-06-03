@@ -25,5 +25,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_documents_message">Oops! There are no documents right now</string>
+    <string name="empty_videos_message">Videos coming soon...</string>
 
 </resources>
