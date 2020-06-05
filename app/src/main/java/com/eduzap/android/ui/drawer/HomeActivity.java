@@ -17,23 +17,26 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.bumptech.glide.Glide;
 import com.eduzap.android.LoginActivity;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.drawer.home.UserHelperClass;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    FirebaseUser currentUser ;
-
+    FirebaseUser currentUser;
+    DatabaseReference userDataRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //ini
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        currentUser = mFirebaseAuth.getCurrentUser();
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,9 +53,34 @@ public class HomeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.drawer_nav_view);
+
+        //go to youtube
+//        navigationView.bringToFront();
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//                int id = menuItem.getItemId();
+//                if (id ==R.id.nav_goto_youtube){
+//                    Intent intent = getPackageManager().getLaunchIntentForPackage("com.google.android.youtube");
+//                    intent.setData(Uri.parse("https://www.youtube.com/channel/UCl2qtfsZbmTuue-i7z413ng/featured"));
+//
+//                    if (intent!=null){
+//                        startActivity(intent);
+//                    }
+//                    else {
+//                        Toast.makeText(HomeActivity.this, "Youtube not installed on this device.", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                drawer.closeDrawer(GravityCompat.START);
+//                return true;
+//            }
+//        });
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         updateNavHeader();
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -98,23 +124,33 @@ public class HomeActivity extends AppCompatActivity {
 
     public void updateNavHeader() {
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.drawer_nav_view);
+        NavigationView navigationView = findViewById(R.id.drawer_nav_view);
         View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = headerView.findViewById(R.id.nav_username);
-        TextView navUserMail = headerView.findViewById(R.id.nav_user_mail);
-        ImageView navUserPhot = headerView.findViewById(R.id.nav_user_photo);
-
-        navUserMail.setText(currentUser.getEmail());
-        navUsername.setText(currentUser.getDisplayName());
-
-        //Glide to load user image
-        Glide.with(this).load(currentUser.getPhotoUrl()).into(navUserPhot);
+        final TextView navUserName = headerView.findViewById(R.id.nav_username);
+        final TextView navUserMail = headerView.findViewById(R.id.nav_user_mail);
+        final ImageView navUserPic = headerView.findViewById(R.id.nav_user_photo);
 
 
+        userDataRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+        userDataRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                UserHelperClass userData = dataSnapshot.getValue(UserHelperClass.class);
 
+                navUserMail.setText(userData.getEmail());
+                navUserName.setText(userData.getName());
+                //Glide to load user image
+                // Glide.with(HomeActivity.this).load(picUrl).into(navUserPic);
 
+            }
 
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Toast.makeText(HomeActivity.this, "Failed to load.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
-
 }

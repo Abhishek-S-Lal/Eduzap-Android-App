@@ -84,18 +84,16 @@ public class VideosFragment extends Fragment {
                     emptyTextViw.setVisibility(View.VISIBLE);
                 }
 
-
                 videoRecyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Oops.... Something is wrong", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
         });
-
         return root;
     }
 

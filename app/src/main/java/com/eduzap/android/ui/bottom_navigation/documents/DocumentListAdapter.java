@@ -45,7 +45,7 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
         holder.downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadFile(context, documentItem.get(position).getDocumentName(), ".pdf", "/Eduzap_Documents", documentItem.get(position).getDocumentUrl());
+                downloadFile(context, documentItem.get(position).getDocumentName(), ".pdf", "/Documents", documentItem.get(position).getDocumentUrl());
                 Toast.makeText(context, "Downloading..", Toast.LENGTH_SHORT).show();
             }
         });
@@ -54,7 +54,7 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
         holder.setiItemClickListener(new IItemClickListener() {
             @Override
             public void onItemClickListener(View view, final int position) {
-                Toast.makeText(context, "Item Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Item Clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -63,7 +63,7 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
 
         String storagePath = Environment.getExternalStorageDirectory()
                 .getPath()
-                + "/Eduzap_Documents/";
+                + "/Documents/";
         //Log.d("Strorgae in view",""+storagePath);
         File f = new File(storagePath);
         if (!f.exists()) {

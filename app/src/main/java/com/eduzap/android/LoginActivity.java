@@ -22,6 +22,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
+
 public class LoginActivity extends AppCompatActivity {
 
     Button callSignUp, loginBtn;
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                UIUtil.hideKeyboard(LoginActivity.this);
                 progressBar.setVisibility(View.VISIBLE);
 //                //Extract email and password
                 String UserEmail = email.getEditText().getText().toString();
@@ -96,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressBar.setVisibility(View.GONE);
                             if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Login Failed! \n Please try again", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Invalid Credentials\nLogin Failed!\n Please try again", Toast.LENGTH_LONG).show();
                             } else {
                                 if (mFirebaseAuth.getCurrentUser().isEmailVerified()) {
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

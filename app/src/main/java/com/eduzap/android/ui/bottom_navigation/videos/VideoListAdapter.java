@@ -32,6 +32,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
     ReadMoreTextView videoDescription;
     YouTubePlayer player;
     int videoPosition = 0;
+    float videoStartPostion = 0f;
 
     public VideoListAdapter(Context context, ArrayList<VideoListModel> videoItem, YouTubePlayerView youTubePlayerView, Lifecycle lifecycle, TextView videoName, ReadMoreTextView videoDescription) {
         this.context = context;
@@ -90,7 +91,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
                 player = youTubePlayer;
                 YouTubePlayerUtils.loadOrCueVideo(
                         youTubePlayer, lifecycle,
-                        videoItem.get(videoPosition).getVideoUrl(), 0f
+                        videoItem.get(videoPosition).getVideoUrl(), videoStartPostion
                 );
             }
         });
