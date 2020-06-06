@@ -7,7 +7,11 @@
     <color name="colorBlack">#000000</color>
     <color name="colorred">#D12424</color>
     <color name="colorBackground">#F5F1FA</color>
-<!--    <color name="headerTextColor">#ECE3E3</color>-->
+    <color name="about_background">#FAD9D9</color>
+    <color name="light_red">#FB4B4B</color>
+
+
+    <!--    <color name="headerTextColor">#ECE3E3</color>-->
 <!--    <color name="colorBackground">#C6000000</color>-->
 <!--    <color name="colorTextHint">#BDBDBD</color>-->
 <!--    <color name="colorPrimaryText">#212121</color>-->

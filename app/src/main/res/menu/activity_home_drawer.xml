@@ -6,15 +6,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/drawer_first" />
         <item
             android:id="@+id/nav_downloads"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_download_black_24dp"
             android:title="@string/drawer_second" />
         <item
             android:id="@+id/nav_notifications"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_save_black_24dp"
             android:title="@string/drawer_third" />
     </group>
 
@@ -23,24 +23,24 @@
             <menu>
                 <item
                     android:id="@+id/nav_about_us"
-                    android:icon="@drawable/ic_menu_camera"
+                    android:icon="@drawable/ic_about_people_black_24dp"
                     android:title="@string/drawer_about_us" />
                 <item
                     android:id="@+id/nav_goto_youtube"
-                    android:icon="@drawable/ic_menu_gallery"
+                    android:icon="@drawable/ic_youtube_searched_for_black_24dp"
                     android:title="@string/drawer_go_to_youtube" />
 
                 <item
                     android:id="@+id/nav_share_now"
-                    android:icon="@drawable/ic_menu_camera"
+                    android:icon="@drawable/ic_share_black_24dp"
                     android:title="@string/drawer_share_now" />
                 <item
                     android:id="@+id/nav_developers"
-                    android:icon="@drawable/ic_menu_slideshow"
+                    android:icon="@drawable/ic_developer_mode_black_24dp"
                     android:title="@string/drawer_developers" />
                 <item
                     android:id="@+id/nav_contact_us"
-                    android:icon="@drawable/ic_menu_slideshow"
+                    android:icon="@drawable/ic_phone_android_black_24dp"
                     android:title="@string/drawer_contact_us" />
             </menu>
         </item>

@@ -16,16 +16,33 @@
 
     <string name="drawer_first">Home</string>
     <string name="drawer_second">Downloads</string>
-    <string name="drawer_third">Notifications</string>
+    <string name="drawer_third">Saved Videos</string>
     <string name="drawer_about_us">About Us</string>
     <string name="drawer_go_to_youtube">Go to Youtube</string>
     <string name="drawer_share_now">Share Now</string>
     <string name="drawer_developers">Developers</string>
     <string name="drawer_contact_us">Contact Us</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="media_and_promotion">Media And Promotion</string>
+    <string name="chief_educator">Chief Educator</string>
+    <string name="co_founder">Co-Founder</string>
+    <string name="dev_arjun_s_g">Arjun S.G</string>
+    <string name="EDUzap_About">EDUzap, an educational platform providing video lectures through Youtube channels, social media
+        for open discussions, space for expressing creativitythrough channel Blog. Offering effective learning programs
+        for competitive aspirants and engineering students. Teaching methods implemented prior to primary input from educational
+        professionals and curriculum developers.</string>
+
+    <string name="Method_of_Teaching">Keeping teaching methods fresh is integral to getting students engaged in their studies
+        and educational videos are a fantastic way of achieving this. These are designed with primary input from educators and
+        curriculum developers, or shown in educational research to be an effective learning tool.</string>
+
+    <string name="Love_To_Learn">"LOVE TO LEARN"
+We like to do what we Love. We Love to do what we like. "Love TO Learn" That Love shows the path to your dream.</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty_documents_message">Oops! There are no documents right now</string>
-    <string name="empty_videos_message">Videos coming soon...</string>
+    <string name="empty_videos_message">Videos coming soon…</string>
+    <string name="dev_abhishek_s_lal">ABHISHEK S LAL</string>
+    <string name="terms_of_use">By Signing In You Are Agreeing To EDUzap\'s Terms of Use and Privacy Policy</string>
 
 </resources>

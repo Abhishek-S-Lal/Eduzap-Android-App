@@ -87,7 +87,6 @@
                 android:textStyle="bold"
                 android:transitionName="button_tran" />
 
-
             <Button
 
                 android:id="@+id/reg_login_btn"
@@ -116,8 +115,7 @@
                 android:layout_marginTop="130dp"
                 android:gravity="center"
                 android:minLines="3"
-                android:text="By Signing In You Are Agreeing To EDUzap's
-                Terms of Use and Privacy Policy" />
+                android:text="@string/terms_of_use" />
 
 
         </LinearLayout>

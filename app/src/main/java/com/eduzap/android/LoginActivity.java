@@ -1,3 +1,4 @@
+
 package com.eduzap.android;
 
 import android.app.ActivityOptions;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
+import java.io.File;
+
 public class LoginActivity extends AppCompatActivity {
 
     Button callSignUp, loginBtn;
@@ -34,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+
+    private File storage;
+    private String[] storagePaths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
