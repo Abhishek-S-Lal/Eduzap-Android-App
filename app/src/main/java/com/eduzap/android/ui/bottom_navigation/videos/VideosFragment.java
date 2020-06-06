@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
 
@@ -49,8 +48,6 @@ public class VideosFragment extends Fragment {
         String subjectPosition = Integer.toString(sPosition);
         String coursePosition = Integer.toString(cPosition);
 
-        final YouTubePlayerView youTubePlayerView = root.findViewById(R.id.youtube_player_view);
-        getLifecycle().addObserver(youTubePlayerView);
 
         videoName = root.findViewById(R.id.video_heading);
         videoDescription = root.findViewById(R.id.video_descrip);
@@ -77,7 +74,9 @@ public class VideosFragment extends Fragment {
 
                     list.add(videoListModel);
                 }
-                adapter = new VideoListAdapter(getActivity(), list, youTubePlayerView, getLifecycle(), videoName, videoDescription);
+                adapter = new VideoListAdapter(getActivity(), list, cPosition, sPosition);
+
+                //when the subject contains no videos
                 if (adapter.getItemCount() == 0) {
                     TextView emptyTextViw = root.findViewById(R.id.emptyVideosMsg);
                     emptyTextViw.setText(R.string.empty_videos_message);
@@ -91,7 +90,7 @@ public class VideosFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Oops.... Something is wrong", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
         });

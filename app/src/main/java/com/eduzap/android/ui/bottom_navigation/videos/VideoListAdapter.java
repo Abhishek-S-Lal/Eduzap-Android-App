@@ -1,6 +1,8 @@
 package com.eduzap.android.ui.bottom_navigation.videos;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,16 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.VideoPlayer;
 import com.eduzap.android.ui.drawer.home.Interface.IItemClickListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerUtils;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,27 +22,21 @@ import java.util.ArrayList;
 public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyViewHolder> {
     Context context;
     ArrayList<VideoListModel> videoItem;
-    YouTubePlayerView youTubePlayerView;
-    Lifecycle lifecycle;
     String videoId;
-    TextView videoName;
-    ReadMoreTextView videoDescription;
-    YouTubePlayer player;
-    int videoPosition = 0;
+    private int coursePosition;
+    private int subjectPosition;
+    private int videoPosition;
 
-    public VideoListAdapter(Context context, ArrayList<VideoListModel> videoItem, YouTubePlayerView youTubePlayerView, Lifecycle lifecycle, TextView videoName, ReadMoreTextView videoDescription) {
+    public VideoListAdapter(Context context, ArrayList<VideoListModel> videoItem, int coursePosition, int subjectPosition) {
         this.context = context;
         this.videoItem = videoItem;
-        this.youTubePlayerView = youTubePlayerView;
-        this.lifecycle = lifecycle;
-        this.videoName = videoName;
-        this.videoDescription = videoDescription;
+        this.coursePosition = coursePosition;
+        this.subjectPosition = subjectPosition;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        initYouTubePlayerView();
         return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.recycler_video_list_item, parent, false));
     }
 
@@ -61,40 +52,38 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
             @Override
             public void onItemClickListener(View view, final int position) {
                 videoPosition = position;
-                if (player != null) {
-                    videoId = videoItem.get(videoPosition).getVideoUrl();
-                    videoName.setText(videoItem.get(videoPosition).getVideoName());
-                    videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
-                    YouTubePlayerUtils.loadOrCueVideo(
-                            player, lifecycle,
-                            videoId, 0f
-                    );
-                } else {
-                    videoName.setText(videoItem.get(videoPosition).getVideoName());
-                    videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
-                }
+
+                videoId = videoItem.get(videoPosition).getVideoUrl();
+
+                Intent intent = new Intent(context, VideoPlayer.class);
+                Bundle b = new Bundle();
+
+
+                //put extra into a bundle and add to intent
+                //get position to carry integer
+                intent.putExtra("subject_position", subjectPosition);
+                intent.putExtra("course_position", coursePosition);
+                intent.putExtra("video_position", videoPosition);
+                intent.putExtra("video_id", videoId);
+                intent.putExtras(b);
+                //begin activity
+                context.startActivity(intent);
+
+
+//                if (player != null) {
+//                    videoId = videoItem.get(videoPosition).getVideoUrl();
+//                    videoName.setText(videoItem.get(videoPosition).getVideoName());
+//                    videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
+//                    YouTubePlayerUtils.loadOrCueVideo(
+//                            player, lifecycle,
+//                            videoId, 0f
+//                    );
+//                } else {
+//                    videoName.setText(videoItem.get(videoPosition).getVideoName());
+//                    videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
+//                }
             }
         });
-    }
-
-    private void initYouTubePlayerView() {
-        // The player will automatically release itself when the fragment is destroyed.
-        // The player will automatically pause when the fragment is stopped
-        // If you don't add YouTubePlayerView as a lifecycle observer, you will have to release it manually.
-
-        videoName.setText(videoItem.get(videoPosition).getVideoName());
-        videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                player = youTubePlayer;
-                YouTubePlayerUtils.loadOrCueVideo(
-                        youTubePlayer, lifecycle,
-                        videoItem.get(videoPosition).getVideoUrl(), 0f
-                );
-            }
-        });
-
     }
 
 
