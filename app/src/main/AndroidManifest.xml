@@ -21,7 +21,14 @@
             android:hardwareAccelerated="true"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.bottom_navigation.LearnActivity" />
+
+        </activity>
 
         <activity
             android:name=".ui.bottom_navigation.LearnActivity"

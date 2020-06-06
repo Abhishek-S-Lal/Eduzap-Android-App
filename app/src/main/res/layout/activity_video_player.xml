@@ -11,7 +11,7 @@
         android:id="@+id/activity_youtube_player_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:showFullScreenButton="false" />
+        app:showFullScreenButton="true" />
 
     <ScrollView
         android:layout_width="match_parent"

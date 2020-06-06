@@ -1,10 +1,12 @@
 package com.eduzap.android.ui;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,8 +28,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerUtils;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
@@ -46,26 +46,14 @@ public class VideoPlayer extends AppCompatActivity {
     String videoId;
     YouTubePlayer player;
     Lifecycle lifecycle;
-    boolean ready = false;
-    boolean callAdapter = false;
+    int cPosition, sPosition, vPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_player);
-
-        initActivityYouTubePlayerView();
-
-        //
-
-        int cPosition = this.getIntent().getIntExtra("course_position", 0);
-        int sPosition = this.getIntent().getIntExtra("subject_position", 0);
-        int vPosition = this.getIntent().getIntExtra("video_position", 0);
-
-        videoId = this.getIntent().getStringExtra("video_id");
-
-        String subjectPosition = Integer.toString(sPosition);
-        String coursePosition = Integer.toString(cPosition);
 
         videoName = findViewById(R.id.video_heading);
         videoDescription = findViewById(R.id.video_descrip);
@@ -73,6 +61,26 @@ public class VideoPlayer extends AppCompatActivity {
         videoPlayerProgressBar.setVisibility(View.VISIBLE);
         videoPlayerRecyclerView = findViewById(R.id.videoPlayerRecyclerView);
         videoPlayerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        activityYouTubePlayerView = findViewById(R.id.activity_youtube_player_view);
+        getLifecycle().addObserver(activityYouTubePlayerView);
+        initPictureInPicture(activityYouTubePlayerView);
+        lifecycle = getLifecycle();
+
+        cPosition = this.getIntent().getIntExtra("course_position", 0);
+        sPosition = this.getIntent().getIntExtra("subject_position", 0);
+        vPosition = this.getIntent().getIntExtra("video_position", 0);
+        videoId = this.getIntent().getStringExtra("video_id");
+
+        startVideo();
+    }
+
+    private void startVideo() {
+
+        String subjectPosition = Integer.toString(sPosition);
+        String coursePosition = Integer.toString(cPosition);
+
+        //hooks
 
         reference = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("videos");
         reference.addValueEventListener(new ValueEventListener() {
@@ -92,8 +100,7 @@ public class VideoPlayer extends AppCompatActivity {
                     list.add(videoPlayerListModel);
                 }
 
-
-                adapter = new VideoPlayerListAdapter(VideoPlayer.this, list, videoName, videoDescription);
+                adapter = new VideoPlayerListAdapter(VideoPlayer.this, list, videoName, videoDescription, activityYouTubePlayerView, lifecycle, player, videoId);
 
 
                 videoName.setText(list.get(vPosition).getVideoName());
@@ -117,27 +124,6 @@ public class VideoPlayer extends AppCompatActivity {
                 videoPlayerProgressBar.setVisibility(View.GONE);
             }
         });
-
-        ///
-    }
-
-    private void initActivityYouTubePlayerView() {
-        activityYouTubePlayerView = findViewById(R.id.activity_youtube_player_view);
-
-        getLifecycle().addObserver(activityYouTubePlayerView);
-        initPictureInPicture(activityYouTubePlayerView);
-        lifecycle = getLifecycle();
-        activityYouTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                player = youTubePlayer;
-                adapter1 = new VideoPlayerListAdapter(player, lifecycle);
-                YouTubePlayerUtils.loadOrCueVideo(
-                        youTubePlayer, getLifecycle(),
-                        videoId, 0f
-                );
-            }
-        });
     }
 
     private void initPictureInPicture(YouTubePlayerView youTubePlayerView) {
@@ -145,6 +131,7 @@ public class VideoPlayer extends AppCompatActivity {
         pictureInPictureIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_picture_in_picture_24dp));
 
         pictureInPictureIcon.setOnClickListener(view -> {
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 boolean supportsPIP = getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
                 if (supportsPIP)
@@ -172,4 +159,15 @@ public class VideoPlayer extends AppCompatActivity {
             activityYouTubePlayerView.getPlayerUiController().showUi(true);
         }
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        cPosition = intent.getIntExtra("course_position", 0);
+        sPosition = intent.getIntExtra("subject_position", 0);
+        vPosition = intent.getIntExtra("video_position", 0);
+        videoId = intent.getStringExtra("video_id");
+        startVideo();
+    }
+
 }

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -16,7 +15,9 @@ import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.eduzap.android.R;
 import com.eduzap.android.ui.drawer.home.Interface.IItemClickListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerUtils;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,16 +32,19 @@ public class VideoPlayerListAdapter extends RecyclerView.Adapter<VideoPlayerList
     ReadMoreTextView videoDescription;
     Lifecycle lifecycle;
 
-    public VideoPlayerListAdapter(YouTubePlayer player, Lifecycle lifecycle) {
-        this.player = player;
-        this.lifecycle = lifecycle;
-    }
+    private YouTubePlayerView activityYouTubePlayerView;
 
-    public VideoPlayerListAdapter(Context context, ArrayList<VideoPlayerListModel> videoItem, TextView videoName, ReadMoreTextView videoDescription) {
+
+    public VideoPlayerListAdapter(Context context, ArrayList<VideoPlayerListModel> videoItem, TextView videoName, ReadMoreTextView videoDescription, YouTubePlayerView activityYouTubePlayerView, Lifecycle lifecycle, YouTubePlayer player, String videoId) {
         this.context = context;
         this.videoItem = videoItem;
         this.videoName = videoName;
         this.videoDescription = videoDescription;
+
+        this.activityYouTubePlayerView = activityYouTubePlayerView;
+        this.lifecycle = lifecycle;
+        this.player = player;
+        this.videoId = videoId;
     }
 
     @NonNull
@@ -56,27 +60,57 @@ public class VideoPlayerListAdapter extends RecyclerView.Adapter<VideoPlayerList
         holder.videoDescription.setText(videoItem.get(position).getVideoDescription());
         Picasso.get().load(videoItem.get(position).getVideoThumbnail()).into(holder.videoThumbnail);
 
+
+        if (player == null) {
+            //init youtube player
+            activityYouTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                    player = youTubePlayer;
+
+                    YouTubePlayerUtils.loadOrCueVideo(
+                            youTubePlayer, lifecycle,
+                            videoId, 0f
+                    );
+                }
+            });
+        } else {
+            YouTubePlayerUtils.loadOrCueVideo(
+                    player, lifecycle,
+                    videoId, 0f
+            );
+        }
+
         //Don't forget to implement item click
         holder.setiItemClickListener(new IItemClickListener() {
             @Override
             public void onItemClickListener(View view, final int position) {
                 videoPosition = position;
                 videoId = videoItem.get(videoPosition).getVideoUrl();
-                if (player != null) {
 
-                    videoName.setText(videoItem.get(videoPosition).getVideoName());
-                    videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
+                videoName.setText(videoItem.get(videoPosition).getVideoName());
+                videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
+
+                if (player != null) {
 
                     YouTubePlayerUtils.loadOrCueVideo(
                             player, lifecycle,
                             videoId, 0f
                     );
-                    Toast.makeText(context, "Video", Toast.LENGTH_SHORT).show();
-                } else {
-                    videoName.setText(videoItem.get(videoPosition).getVideoName());
-                    videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
 
-                    Toast.makeText(context, "Video else", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    activityYouTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                        @Override
+                        public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                            player = youTubePlayer;
+
+                            YouTubePlayerUtils.loadOrCueVideo(
+                                    youTubePlayer, lifecycle,
+                                    videoId, 0f
+                            );
+                        }
+                    });
                 }
             }
         });
