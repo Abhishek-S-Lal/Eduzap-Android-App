@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_download_black_24dp"
             android:title="@string/drawer_second" />
         <item
-            android:id="@+id/nav_notifications"
+            android:id="@+id/nav_savedvideo"
             android:icon="@drawable/ic_save_black_24dp"
             android:title="@string/drawer_third" />
     </group>

@@ -18,7 +18,7 @@
         tools:layout="@layout/drawer_fragment_downloads" />
 
     <fragment
-        android:id="@+id/nav_notifications"
+        android:id="@+id/nav_savedvideo"
         android:name="com.eduzap.android.ui.drawer.notifications.NotificationsFragment"
         android:label="@string/drawer_third"
         tools:layout="@layout/drawer_fragment_notifications" />
