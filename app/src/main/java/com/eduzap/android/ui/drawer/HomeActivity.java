@@ -2,6 +2,7 @@ package com.eduzap.android.ui.drawer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -105,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
-                Toast.makeText(this, "Successfullly Signed out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Successfully Signed out", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
@@ -148,6 +149,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError error) {
+                Log.e(error.toString(), "Database error");
                 // Failed to read value
                 Toast.makeText(HomeActivity.this, "Failed to load.", Toast.LENGTH_SHORT).show();
             }

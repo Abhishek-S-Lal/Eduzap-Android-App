@@ -28,6 +28,7 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+
         <com.borjabravo.readmoretextview.ReadMoreTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +42,6 @@
             app:trimLength="200"
 
             app:trimMode="trimModeLength" />
-
 
         <ImageView
             android:layout_width="match_parent"

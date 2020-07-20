@@ -10,7 +10,7 @@ public class NotificationsViewModel extends ViewModel {
 
     public NotificationsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Fragment to show notification list.");
+        mText.setValue("Fragment to show saved videos.");
     }
 
     public LiveData<String> getText() {

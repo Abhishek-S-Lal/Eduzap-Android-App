@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_margin="10dp"
     android:background="@drawable/border_downloads_list"
     android:orientation="horizontal"
     android:padding="10dp"
@@ -11,7 +11,7 @@
 
     <ImageView
         android:id="@+id/document_thumbnail"
-        android:layout_width="100dp"
+        android:layout_width="50dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
@@ -22,15 +22,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_weight="1" />
 
     <Button
         android:id="@+id/downloads_view_btn"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="40sp"
         android:layout_gravity="center"
-        android:background="@color/light_red"
+        android:background="@drawable/rounded_button"
         android:paddingStart="5dp"
         android:paddingEnd="2dp"
         android:text="open"

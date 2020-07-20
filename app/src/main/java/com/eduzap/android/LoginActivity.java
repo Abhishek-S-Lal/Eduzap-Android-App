@@ -92,19 +92,22 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (UserEmail.isEmpty() && UserPassword.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Fields are empty.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                 } else if (UserEmail.isEmpty()) {
                     email.setError("Please enter email id");
                     email.requestFocus();
+                    progressBar.setVisibility(View.GONE);
                 } else if (UserPassword.isEmpty()) {
                     password.setError("Please enter your password");
                     password.requestFocus();
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     mFirebaseAuth.signInWithEmailAndPassword(UserEmail, UserPassword).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressBar.setVisibility(View.GONE);
                             if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Invalid Credentials\nLogin Failed!\n Please try again", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Invalid Credentials\nLogin Failed!", Toast.LENGTH_LONG).show();
                             } else {
                                 if (mFirebaseAuth.getCurrentUser().isEmailVerified()) {
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

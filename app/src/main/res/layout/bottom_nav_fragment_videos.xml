@@ -59,8 +59,7 @@
                 app:colorClickableText="@color/colorPrimaryDark"
                 app:trimCollapsedText="Show less"
                 app:trimExpandedText="Show more"
-                app:trimLines="3"
-                app:trimMode="trimModeLine" />
+                app:trimLines="3" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/videosRecyclerView"
