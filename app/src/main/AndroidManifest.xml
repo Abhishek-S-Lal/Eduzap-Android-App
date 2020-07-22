@@ -17,21 +17,32 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+
         <activity
             android:name=".ui.VideoPlayer"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:hardwareAccelerated="true"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:targetApi="n">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.bottom_navigation.LearnActivity" />
+
+        </activity>
 
         <activity
             android:name=".ui.bottom_navigation.LearnActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_learn"
-            android:parentActivityName=".ui.drawer.HomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity">
+            android:parentActivityName=".ui.drawer.MainActivity"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.drawer.HomeActivity" />
+                android:value=".ui.drawer.MainActivity" />
         </activity>
         <activity
             android:name=".SplashScreenActivity"
