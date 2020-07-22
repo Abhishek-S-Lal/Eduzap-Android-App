@@ -64,7 +64,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.MyViewHo
                 intent.putExtra("course_position", coursePosition);
 
                 intent.putExtras(b);
-
                 //begin activity
                 context.startActivity(intent);
             }

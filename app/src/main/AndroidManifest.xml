@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.eduzap.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,12 +18,13 @@
 
         <activity
             android:name=".ui.VideoPlayer"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:targetApi="n">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -33,14 +35,26 @@
         <activity
             android:name=".ui.bottom_navigation.LearnActivity"
             android:label="@string/title_activity_learn"
-            android:parentActivityName=".ui.drawer.HomeActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:hardwareAccelerated="true"
+            android:parentActivityName=".ui.drawer.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.drawer.HomeActivity" />
+                android:value=".ui.drawer.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ui.drawer.MainActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".Signup_Form"
+            android:label="Register" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="Log In" />
+
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/SplashScreenStyle">
@@ -50,16 +64,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Signup_Form"
-            android:label="Register" />
-        <activity
-            android:name=".ui.drawer.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="Log In" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -35,7 +36,8 @@ import java.util.ArrayList;
 public class VideoPlayer extends AppCompatActivity {
 
     private YouTubePlayerView activityYouTubePlayerView;
-
+    static boolean active = false;
+    static boolean back = false;
     DatabaseReference reference;
     ArrayList<VideoPlayerListModel> list;
     VideoPlayerListAdapter adapter, adapter1;
@@ -82,6 +84,7 @@ public class VideoPlayer extends AppCompatActivity {
 
         //hooks
 
+
         reference = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("videos");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -116,6 +119,7 @@ public class VideoPlayer extends AppCompatActivity {
 
                 videoPlayerRecyclerView.setAdapter(adapter);
                 videoPlayerProgressBar.setVisibility(View.GONE);
+
             }
 
             @Override
@@ -136,6 +140,7 @@ public class VideoPlayer extends AppCompatActivity {
                 boolean supportsPIP = getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
                 if (supportsPIP)
                     enterPictureInPictureMode();
+
             } else {
                 new AlertDialog.Builder(this)
                         .setTitle("Can't enter picture in picture mode")
@@ -147,10 +152,10 @@ public class VideoPlayer extends AppCompatActivity {
         youTubePlayerView.getPlayerUiController().addView(pictureInPictureIcon);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
-
         if (isInPictureInPictureMode) {
             activityYouTubePlayerView.enterFullScreen();
             activityYouTubePlayerView.getPlayerUiController().showUi(false);
@@ -160,14 +165,37 @@ public class VideoPlayer extends AppCompatActivity {
         }
     }
 
-    @Override
+    @Override //this function will call when second time intending since launch mode is single task
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
+        finish(); //we will destroy the current instance because we dont want the old state
         cPosition = intent.getIntExtra("course_position", 0);
         sPosition = intent.getIntExtra("subject_position", 0);
         vPosition = intent.getIntExtra("video_position", 0);
         videoId = intent.getStringExtra("video_id");
-        startVideo();
+
+        //intend the same activity with the new values
+        Intent i = getIntent();
+        Bundle b = new Bundle();
+        //put extra into a bundle and add to intent
+        //get position to carry integer
+        i.putExtra("subject_position", sPosition);
+        i.putExtra("course_position", cPosition);
+        i.putExtra("video_position", vPosition);
+        i.putExtra("video_id", videoId);
+        i.putExtras(b);
+        startActivity(i);
+
+
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finishAndRemoveTask();
     }
 
 }

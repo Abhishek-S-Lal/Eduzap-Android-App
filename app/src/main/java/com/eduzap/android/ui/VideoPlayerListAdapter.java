@@ -16,6 +16,7 @@ import com.eduzap.android.R;
 import com.eduzap.android.ui.drawer.home.Interface.IItemClickListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerUtils;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
@@ -31,6 +32,7 @@ public class VideoPlayerListAdapter extends RecyclerView.Adapter<VideoPlayerList
     TextView videoName;
     ReadMoreTextView videoDescription;
     Lifecycle lifecycle;
+    YouTubePlayerTracker tracker;
 
     private YouTubePlayerView activityYouTubePlayerView;
 
@@ -72,13 +74,16 @@ public class VideoPlayerListAdapter extends RecyclerView.Adapter<VideoPlayerList
                             youTubePlayer, lifecycle,
                             videoId, 0f
                     );
+
                 }
             });
+
         } else {
             YouTubePlayerUtils.loadOrCueVideo(
                     player, lifecycle,
                     videoId, 0f
             );
+
         }
 
         //Don't forget to implement item click
@@ -147,4 +152,5 @@ public class VideoPlayerListAdapter extends RecyclerView.Adapter<VideoPlayerList
             iItemClickListener.onItemClickListener(v, getAdapterPosition());
         }
     }
+
 }
