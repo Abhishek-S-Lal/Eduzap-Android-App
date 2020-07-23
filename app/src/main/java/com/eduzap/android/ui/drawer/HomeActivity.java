@@ -105,7 +105,6 @@ public class HomeActivity extends AppCompatActivity {
                     i.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
                     startActivity(Intent.createChooser(i, "Share With"));
                     return true;
-
                 }
                 NavigationUI.onNavDestinationSelected(menuItem, navController);
                 //This is for closing the drawer after acting on it
