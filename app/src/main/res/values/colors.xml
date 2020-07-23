@@ -9,6 +9,8 @@
     <color name="colorBackground">#F5F1FA</color>
     <color name="about_background">#FAD9D9</color>
     <color name="light_red">#FB4B4B</color>
+    <color name="white_red">#F7F89999</color>
+    <color name="dark_red">#E8EA0C3F</color>
 
 
     <!--    <color name="headerTextColor">#ECE3E3</color>-->
