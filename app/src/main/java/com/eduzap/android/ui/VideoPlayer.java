@@ -132,7 +132,7 @@ public class VideoPlayer extends AppCompatActivity {
 
     private void initPictureInPicture(YouTubePlayerView youTubePlayerView) {
         ImageView pictureInPictureIcon = new ImageView(this);
-        pictureInPictureIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_picture_in_picture_24dp));
+        pictureInPictureIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_picture_in_picture));
 
         pictureInPictureIcon.setOnClickListener(view -> {
 
@@ -186,9 +186,8 @@ public class VideoPlayer extends AppCompatActivity {
         i.putExtra("video_id", videoId);
         i.putExtras(b);
         startActivity(i);
-
-
     }
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

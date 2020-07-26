@@ -96,6 +96,7 @@ public class VideoPlayerListAdapter extends RecyclerView.Adapter<VideoPlayerList
                 videoName.setText(videoItem.get(videoPosition).getVideoName());
                 videoDescription.setText(videoItem.get(videoPosition).getVideoDescription());
 
+
                 if (player != null) {
 
                     YouTubePlayerUtils.loadOrCueVideo(

@@ -16,17 +16,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
 
-            <!--            add header if necessary-->
+           <!--            add header if necessary-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/videosRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/videosRecyclerView"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp" />
 
         </LinearLayout>
