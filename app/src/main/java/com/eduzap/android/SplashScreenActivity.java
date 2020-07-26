@@ -15,18 +15,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.eduzap.android.ui.drawer.downloads.Method;
-import com.eduzap.android.ui.drawer.downloads.StorageUtil;
-
-import java.io.File;
-
 public class SplashScreenActivity extends AppCompatActivity {
 
     private static int SPLASH_SCREEN = 3000;
 
 
-    private File storage;
-    private String[] storagePaths;
 
     //Variables
     Animation topAnim, bottomAnim;
@@ -36,15 +29,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //load data here
-        storagePaths = StorageUtil.getStorageDirectories(this);
-
-        for (String path : storagePaths) {
-            storage = new File(path);
-            Method.load_Directory_Files(storage);
-        }
-
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

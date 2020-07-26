@@ -41,7 +41,7 @@ public class Signup_Form extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup__form);
+        setContentView(R.layout.activity_signup_form);
 
         //Hooks
         image = findViewById(R.id.logo_image);
@@ -101,6 +101,7 @@ public class Signup_Form extends AppCompatActivity {
 
         if (val.isEmpty()) {
             regName.setError("Field cannot be empty");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else {
             regName.setError(null);
@@ -115,12 +116,15 @@ public class Signup_Form extends AppCompatActivity {
 
         if (val.isEmpty()) {
             regUsername.setError("Field cannot be empty");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else if (val.length() >= 15) {
             regUsername.setError("Username too long");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else if (!val.matches(noWhiteSpace)) {
             regUsername.setError("White Spaces are not allowed");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else {
             regUsername.setError(null);
@@ -135,9 +139,11 @@ public class Signup_Form extends AppCompatActivity {
 
         if (val.isEmpty()) {
             regEmail.setError("Field cannot be empty");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else if (!val.matches(emailPattern)) {
             regEmail.setError("Invalid email address");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else {
             regEmail.setError(null);
@@ -151,6 +157,7 @@ public class Signup_Form extends AppCompatActivity {
 
         if (val.isEmpty()) {
             regPhoneNo.setError("Field cannot be empty");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else {
             regPhoneNo.setError(null);
@@ -173,9 +180,11 @@ public class Signup_Form extends AppCompatActivity {
 
         if (val.isEmpty()) {
             regPassword.setError("Field cannot be empty");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else if (!val.matches(passwordVal)) {
             regPassword.setError("Password is too weak. Please enter a password that contain atleast 6 characters with no white spaces.");
+            progressBar.setVisibility(View.GONE);
             return false;
         } else {
             regPassword.setError(null);
@@ -188,6 +197,7 @@ public class Signup_Form extends AppCompatActivity {
     public void registerUser(View view) {
 
         if (!validateName() | !validatePassword() | !validatePhoneNo() | !validateEmail() | !validateUsername()) {
+            progressBar.setVisibility(View.GONE);
             return;
         }
         //Get all the values
@@ -200,7 +210,7 @@ public class Signup_Form extends AppCompatActivity {
             gender = "Male";
         }
         if (radioGenderFemale.isChecked()) {
-            gender = "Female;";
+            gender = "Female";
         }
 
         UserHelperClass helperClass = new UserHelperClass(name, username, email, phoneNo, gender);
@@ -248,6 +258,7 @@ public class Signup_Form extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             } else {
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(Signup_Form.this, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
                             }
                         }

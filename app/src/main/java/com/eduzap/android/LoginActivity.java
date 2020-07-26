@@ -2,11 +2,14 @@
 package com.eduzap.android;
 
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eduzap.android.ui.drawer.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -25,21 +30,18 @@ import com.google.firebase.auth.FirebaseUser;
 
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
-import java.io.File;
-
 public class LoginActivity extends AppCompatActivity {
 
-    Button callSignUp, loginBtn;
+    Button callSignUp, loginBtn, forgotpassword;
     ImageView image;
     TextView sloganText, statusMsg;
     TextInputLayout email, password;
     ProgressBar progressBar;
 
-    FirebaseAuth mFirebaseAuth;
+
+    private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    private File storage;
-    private String[] storagePaths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.log_password);
         loginBtn = findViewById(R.id.login_btn);
         statusMsg = findViewById(R.id.status_msg);
+        forgotpassword = findViewById(R.id.forgot_password_btn);
 
         progressBar = findViewById(R.id.loginProgressBar);
 
@@ -63,23 +66,20 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         //login authentication
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if (mFirebaseUser != null && mFirebaseAuth.getCurrentUser().isEmailVerified()) {
-                    progressBar.setVisibility(View.GONE);
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                }
-
+        mAuthStateListener = firebaseAuth -> {
+            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            if (mFirebaseUser != null && mFirebaseAuth.getCurrentUser().isEmailVerified()) {
+                progressBar.setVisibility(View.GONE);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                progressBar.setVisibility(View.GONE);
             }
-        };
 
+        };
         mFirebaseAuth = FirebaseAuth.getInstance();
+
         loginBtn = findViewById(R.id.login_btn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                     password.requestFocus();
                     progressBar.setVisibility(View.GONE);
                 } else {
+
                     mFirebaseAuth.signInWithEmailAndPassword(UserEmail, UserPassword).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -144,6 +145,56 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        forgotpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText resetMail = new EditText(v.getContext());
+                AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
+                passwordResetDialog.setTitle("Reset Password");
+                passwordResetDialog.setMessage("Enter your registered email to recieve password reset link.");
+                passwordResetDialog.setView(resetMail);
+
+
+                passwordResetDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //extract the mail and reset link
+                        String mail = resetMail.getText().toString();
+                        if (mail.isEmpty()) {
+                            Toast.makeText(LoginActivity.this, "Please enter your email.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            progressBar.setVisibility(View.VISIBLE);
+                            UIUtil.hideKeyboard(LoginActivity.this);
+                            mFirebaseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(LoginActivity.this, "Reset Link Sent To Email", Toast.LENGTH_LONG).show();
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+
+                        }
+                    }
+                });
+
+
+                passwordResetDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //closing dialog
+                    }
+                });
+                passwordResetDialog.create().show();
+
+            }
+        });
     }
 
     @Override
@@ -151,5 +202,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         progressBar.setVisibility(View.VISIBLE);
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    public void onStop() {
+        super.onStop();
+        if (mAuthStateListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+
+        }
     }
 }

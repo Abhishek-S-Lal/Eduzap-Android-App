@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,8 +18,9 @@ import com.eduzap.android.ui.drawer.home.Adapter.CoursesAdapter;
 import com.eduzap.android.ui.drawer.home.Adapter.SliderAdapter;
 import com.eduzap.android.ui.drawer.home.Interface.IFirebaseLoadListener;
 import com.eduzap.android.ui.drawer.home.Model.CoursesModel;
-import com.eduzap.android.ui.drawer.home.Model.SliderItem;
+import com.eduzap.android.ui.drawer.home.Model.SliderModel;
 import com.eduzap.android.ui.drawer.home.Model.SubjectsModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,71 +37,110 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
-    //AlertDialog dialog;
+    SliderView sliderView;
     IFirebaseLoadListener iFirebaseLoadListener;
     RecyclerView courses_recycler_view;
     ProgressBar progressBar;
-    DatabaseReference myData;
-    private HomeViewModel homeViewModel;
+    DatabaseReference myData, imgSliderData;
+    FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private ValueEventListener coursesAndSubjectsListener, imageSliderListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+
         View root = inflater.inflate(R.layout.drawer_fragment_home, container, false);
 
+        //Views
+        sliderView = root.findViewById(R.id.imageSlider);
         progressBar = root.findViewById(R.id.homeProgressBar);
+        courses_recycler_view = root.findViewById(R.id.coursesRecyclerView);
+        courses_recycler_view.setHasFixedSize(true);
+        courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        //image slider
-        final SliderView sliderView = root.findViewById(R.id.imageSlider);
-
-
-        SliderAdapter adapter = new SliderAdapter(this.getActivity());
-        adapter.addItem(new SliderItem("Demo Image 1", "https://quotefancy.com/media/wallpaper/1600x900/10414-Leonardo-da-Vinci-Quote-Time-stays-long-enough-for-those-who-use.jpg"));
-        adapter.addItem(new SliderItem("Demo Image 2", "https://quotefancy.com/media/wallpaper/1600x900/10317-Leonardo-da-Vinci-Quote-Learning-never-exhausts-the-mind.jpg"));
-        adapter.addItem(new SliderItem("Demo Image 3", "https://quotefancy.com/media/wallpaper/3840x2160/10256-Leonardo-da-Vinci-Quote-Study-without-desire-spoils-the-memory-and.jpg"));
-        adapter.addItem(new SliderItem("Demo Image 4", "https://quotefancy.com/media/wallpaper/3840x2160/24042-Albert-Einstein-Quote-Any-fool-can-know-The-point-is-to-understand.jpg"));
-
-        sliderView.setSliderAdapter(adapter);
-
-        sliderView.setIndicatorAnimation(IndicatorAnimations.THIN_WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
-        sliderView.setIndicatorSelectedColor(Color.WHITE);
-        sliderView.setIndicatorUnselectedColor(Color.GRAY);
-        sliderView.setScrollTimeInSec(8);
-        sliderView.setAutoCycle(true);
-        sliderView.startAutoCycle();
-
-        sliderView.setOnIndicatorClickListener(new DrawController.ClickListener() {
+        authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onIndicatorClicked(int position) {
-                sliderView.setCurrentPagePosition(position);
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null) {
+                    // signed in
+                    loadImageSlider();
+
+                    loadCoursesAndSubjects();
+
+                } else {
+                    //signed out
+                    if (myData != null) {
+                        myData.removeEventListener(coursesAndSubjectsListener);
+                    }
+                    if (imgSliderData != null) {
+                        imgSliderData.removeEventListener(imageSliderListener);
+                    }
+
+                }
             }
-        });
+        };
+        firebaseAuth = FirebaseAuth.getInstance();
+
+
+        return root;
+    }
+
+    private void loadImageSlider() {
+        imgSliderData = FirebaseDatabase.getInstance().getReference("ImageSlider");
+
+        imageSliderListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<SliderModel> list = new ArrayList<SliderModel>();
+
+                for (DataSnapshot groupSnapShot : snapshot.getChildren()) {
+                    SliderModel sliderModel = new SliderModel();
+                    sliderModel.setDescription(groupSnapShot.child("description").getValue(true).toString());
+                    sliderModel.setImageUrl(groupSnapShot.child("imageUrl").getValue(true).toString());
+
+                    list.add(sliderModel);
+                }
+                SliderAdapter adapter = new SliderAdapter(getContext());
+                adapter.renewItems(list);
+
+                sliderView.setSliderAdapter(adapter);
+
+                sliderView.setIndicatorAnimation(IndicatorAnimations.THIN_WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
+                sliderView.setIndicatorSelectedColor(Color.WHITE);
+                sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                sliderView.setScrollTimeInSec(8);
+                sliderView.setAutoCycle(true);
+                sliderView.startAutoCycle();
+
+                sliderView.setOnIndicatorClickListener(new DrawController.ClickListener() {
+                    @Override
+                    public void onIndicatorClicked(int position) {
+                        sliderView.setCurrentPagePosition(position);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Error loading..", Toast.LENGTH_SHORT).show();
+            }
+        };
+        imgSliderData.addListenerForSingleValueEvent(imageSliderListener);
+    }
+
+    private void loadCoursesAndSubjects() {
 
         //Init
         myData = FirebaseDatabase.getInstance().getReference("Courses");
         //dialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
         iFirebaseLoadListener = this;
 
-        //View
-        courses_recycler_view = root.findViewById(R.id.coursesRecyclerView);
-        courses_recycler_view.setHasFixedSize(true);
-        courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-
-
-        //load data
-        getFirebaseData();
-
-        return root;
-    }
-
-    private void getFirebaseData() {
         //dialog.show();
         progressBar.setVisibility(View.VISIBLE);
 
-        myData.addListenerForSingleValueEvent(new ValueEventListener() {
+        coursesAndSubjectsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<CoursesModel> coursesModels = new ArrayList<>();
@@ -121,7 +160,8 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 iFirebaseLoadListener.FirebaseLoadFailed(databaseError.getMessage());
             }
-        });
+        };
+        myData.addValueEventListener(coursesAndSubjectsListener);
     }
 
     @Override
@@ -142,5 +182,15 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        firebaseAuth.removeAuthStateListener(authStateListener);
+    }
 }

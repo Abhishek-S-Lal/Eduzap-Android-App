@@ -20,10 +20,10 @@
 
             <ImageView
                 android:id="@+id/logo_image"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:padding="15dp"
-                android:src="@drawable/eduzap_logo_small"
+                android:layout_width="130dp"
+                android:layout_height="145dp"
+                android:layout_gravity="center"
+                android:src="@drawable/eduzaplogo"
                 android:transitionName="logo_image" />
 
             <TextView
@@ -33,6 +33,7 @@
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/boogaloo"
                 android:text="Love to Learn"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="25sp"
                 android:textStyle="italic"

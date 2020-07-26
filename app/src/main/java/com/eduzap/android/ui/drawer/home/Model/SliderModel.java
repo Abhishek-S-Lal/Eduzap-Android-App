@@ -1,12 +1,16 @@
 package com.eduzap.android.ui.drawer.home.Model;
 
-public class SliderItem {
+public class SliderModel {
     private String description;
     private String imageUrl;
 
-    public SliderItem(String description, String imageUrl) {
+    public SliderModel(String description, String imageUrl) {
         this.description = description;
         this.imageUrl = imageUrl;
+    }
+
+    public SliderModel() {
+
     }
 
     public String getDescription() {

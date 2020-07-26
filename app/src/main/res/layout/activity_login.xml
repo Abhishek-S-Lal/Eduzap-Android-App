@@ -20,10 +20,10 @@
 
             <ImageView
                 android:id="@+id/logo_image"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:padding="15dp"
-                android:src="@drawable/eduzap_logo_small"
+                android:layout_width="130dp"
+                android:layout_height="145dp"
+                android:layout_gravity="center"
+                android:src="@drawable/eduzaplogo"
                 android:transitionName="logo_image" />
 
             <TextView
@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/boogaloo"
+                android:layout_marginTop="20dp"
                 android:text="Love to Learn"
                 android:textColor="@color/colorAccent"
                 android:textSize="25sp"
@@ -74,12 +75,24 @@
                     android:transitionName="password_tran" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Button
+                android:id="@+id/forgot_password_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="#00000000"
+                android:elevation="0dp"
+                android:padding="0dp"
+                android:text="Forgot Password ?"
+                android:textColor="#000"
+                android:transitionName="login_signup_trans" />
+
 
             <Button
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_button"
                 android:text="LOGIN"
                 android:textColor="@color/colorWhite"
@@ -112,7 +125,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="100dp"
                 android:gravity="center"
                 android:minLines="3"
                 android:text="@string/terms_of_use" />

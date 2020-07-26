@@ -7,11 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.eduzap.android.R;
-import com.eduzap.android.ui.drawer.home.Model.SliderItem;
+import com.eduzap.android.ui.drawer.home.Model.SliderModel;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.ArrayList;
@@ -20,24 +19,24 @@ import java.util.List;
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
 
     private Context context;
-    private List<SliderItem> mSliderItems = new ArrayList<>();
+    private List<SliderModel> mSliderModels = new ArrayList<>();
 
     public SliderAdapter(Context context) {
         this.context = context;
     }
 
-    public void renewItems(List<SliderItem> sliderItems) {
-        this.mSliderItems = sliderItems;
+    public void renewItems(List<SliderModel> sliderModels) {
+        this.mSliderModels = sliderModels;
         notifyDataSetChanged();
     }
 
     public void deleteItem(int position) {
-        this.mSliderItems.remove(position);
+        this.mSliderModels.remove(position);
         notifyDataSetChanged();
     }
 
-    public void addItem(SliderItem sliderItem) {
-        this.mSliderItems.add(sliderItem);
+    public void addItem(SliderModel sliderModel) {
+        this.mSliderModels.add(sliderModel);
         notifyDataSetChanged();
     }
 
@@ -50,20 +49,20 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
 
-        SliderItem sliderItem = mSliderItems.get(position);
+        SliderModel sliderModel = mSliderModels.get(position);
 
-        viewHolder.textViewDescription.setText(sliderItem.getDescription());
+        viewHolder.textViewDescription.setText(sliderModel.getDescription());
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);
         Glide.with(viewHolder.itemView)
-                .load(sliderItem.getImageUrl())
+                .load(sliderModel.getImageUrl())
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -71,7 +70,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     @Override
     public int getCount() {
         //slider view count could be dynamic size
-        return mSliderItems.size();
+        return mSliderModels.size();
     }
 
     class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
