@@ -25,6 +25,8 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
     ArrayList<DocumentListModel> documentItem;
     String url;
     int documentPosition = 0;
+    long downloadID;
+    DownloadManager downloadmanager;
 
     public DocumentListAdapter(Context context, ArrayList<DocumentListModel> documentItem) {
         this.context = context;
@@ -45,8 +47,8 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
         holder.downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadFile(context, documentItem.get(position).getDocumentName(), ".pdf", "/Documents", documentItem.get(position).getDocumentUrl());
                 Toast.makeText(context, "Downloading..", Toast.LENGTH_SHORT).show();
+                downloadFile(context, documentItem.get(position).getDocumentName(), ".pdf", "/Documents", documentItem.get(position).getDocumentUrl());
             }
         });
 
@@ -76,17 +78,30 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
         }
 //                Log.d("Storage ",""+pathname);
 
-        DownloadManager downloadmanager = (DownloadManager) context.
+        downloadmanager = (DownloadManager) context.
                 getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
 
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
+        //Set the title of this download, to be displayed in notifications.
+        request.setTitle(fileName);
 
-        downloadmanager.enqueue(request);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        //Set the local destination for the downloaded file to a path within the application's external files directory
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
+        //Enqueue a new download and same the referenceId
+        downloadID = downloadmanager.enqueue(request);
+
+
     }
 
+    public long getDownloadID() {
+        return downloadID;
+    }
+
+    public DownloadManager getDownloadmanager() {
+        return downloadmanager;
+    }
 
     @Override
     public int getItemCount() {
@@ -119,4 +134,5 @@ public class DocumentListAdapter extends RecyclerView.Adapter<DocumentListAdapte
             iItemClickListener.onItemClickListener(v, getAdapterPosition());
         }
     }
+
 }

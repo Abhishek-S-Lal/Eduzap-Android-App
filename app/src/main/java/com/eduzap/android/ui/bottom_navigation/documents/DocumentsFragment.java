@@ -1,5 +1,11 @@
 package com.eduzap.android.ui.bottom_navigation.documents;
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,13 +40,31 @@ public class DocumentsFragment extends Fragment {
     ProgressBar progressBar;
     TextView documentName, documentDescription;
 
+    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            DownloadManager.Query q = new DownloadManager.Query();
+            q.setFilterById(extras.getLong(DownloadManager.EXTRA_DOWNLOAD_ID));
+            Cursor c = adapter.getDownloadmanager().query(q);
+
+            if (c.moveToFirst()) {
+                int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                    Toast.makeText(context, "Download Completed. You can view your downloads from the menu.", Toast.LENGTH_LONG).show();
+                    String file_title = c.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE));
+                } else if (status == DownloadManager.STATUS_FAILED) {
+                    Toast.makeText(context, "Download Failed.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    };
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         documentsViewModel =
                 ViewModelProviders.of(this).get(DocumentsViewModel.class);
         final View root = inflater.inflate(R.layout.bottom_nav_fragment_documents, container, false);
-
-        //
 
         int cPosition = getActivity().getIntent().getIntExtra("course_position", 0);
         int sPosition = getActivity().getIntent().getIntExtra("subject_position", 0);
@@ -90,7 +114,16 @@ public class DocumentsFragment extends Fragment {
             }
         });
 
-        //
+        getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+
         return root;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(onDownloadComplete);
+    }
+
 }
