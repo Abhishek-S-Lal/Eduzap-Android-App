@@ -9,7 +9,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="bottom_nav_first">Videos</string>
-    <string name="bottom_nav_second">Documents</string>
+    <string name="bottom_nav_second">Resources</string>
     <string name="bottom_nav_third">Quiz</string>
 
     <string name="title_activity_learn">Learn</string>
@@ -36,13 +36,13 @@
         and educational videos are a fantastic way of achieving this. These are designed with primary input from educators and
         curriculum developers, or shown in educational research to be an effective learning tool.</string>
 
-    <string name="Love_To_Learn">"LOVE TO LEARN"
-We like to do what we Love. We Love to do what we like. "Love TO Learn" That Love shows the path to your dream.</string>
+
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty_documents_message">Oops! There are no documents right now</string>
     <string name="empty_videos_message">Videos coming soon…</string>
     <string name="dev_abhishek_s_lal">ABHISHEK S LAL</string>
     <string name="terms_of_use">By Signing In You Are Agreeing To EDUzap\'s Terms of Use and Privacy Policy</string>
+    <string name="empty_downloads_message">Oops...You have no downloads right now.</string>
 
 </resources>

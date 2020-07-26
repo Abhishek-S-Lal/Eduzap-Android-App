@@ -18,7 +18,7 @@
         tools:layout="@layout/drawer_fragment_downloads" />
 
     <fragment
-        android:id="@+id/nav_notifications"
+        android:id="@+id/nav_saved_videos"
         android:name="com.eduzap.android.ui.drawer.notifications.NotificationsFragment"
         android:label="@string/drawer_third"
         tools:layout="@layout/drawer_fragment_notifications" />
@@ -35,9 +35,9 @@
         android:label="@string/drawer_contact_us"
         tools:layout="@layout/drawer_fragment_contact_us" />
 
-    <fragment
-        android:id="@+id/nav_developers"
-        android:name="com.eduzap.android.ui.drawer.developers.DevelopersFragment"
-        android:label="@string/drawer_developers"
-        tools:layout="@layout/drawer_fragment_developers" />
+    <!--    <fragment-->
+    <!--        android:id="@+id/nav_developers"-->
+    <!--        android:name="com.eduzap.android.ui.drawer.developers.DevelopersFragment"-->
+    <!--        android:label="@string/drawer_developers"-->
+    <!--        tools:layout="@layout/drawer_fragment_developers" />-->
 </navigation>
