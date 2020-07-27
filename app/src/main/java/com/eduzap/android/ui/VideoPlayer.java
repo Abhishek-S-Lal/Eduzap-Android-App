@@ -188,8 +188,6 @@ public class VideoPlayer extends AppCompatActivity {
         startActivity(i);
     }
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onStop() {

@@ -15,7 +15,8 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/pdf_download_icon" />
+        android:padding="5dp"
+        android:src="@drawable/ic_pdf" />
 
     <TextView
         android:id="@+id/document_title"
