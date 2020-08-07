@@ -161,7 +161,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
                 iFirebaseLoadListener.FirebaseLoadFailed(databaseError.getMessage());
             }
         };
-        myData.addValueEventListener(coursesAndSubjectsListener);
+        myData.addListenerForSingleValueEvent(coursesAndSubjectsListener);
     }
 
     @Override

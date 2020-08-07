@@ -18,8 +18,8 @@ import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.eduzap.android.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -27,14 +27,14 @@ import java.util.ArrayList;
 public class VideosFragment extends Fragment {
 
     private VideosViewModel videosViewModel;
-
-    DatabaseReference reference;
+    Query query;
     ArrayList<VideoListModel> list;
     VideoListAdapter adapter;
     RecyclerView videoRecyclerView;
     ProgressBar progressBar;
     TextView videoName;
     ReadMoreTextView videoDescription;
+    private ValueEventListener videoListListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,8 +57,8 @@ public class VideosFragment extends Fragment {
         videoRecyclerView = root.findViewById(R.id.videosRecyclerView);
         videoRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        reference = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("videos");
-        reference.addValueEventListener(new ValueEventListener() {
+        query = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("videos");
+        videoListListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list = new ArrayList<VideoListModel>();
@@ -92,7 +92,8 @@ public class VideosFragment extends Fragment {
                 Toast.makeText(getContext(), "Oops.... Something is wrong", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
-        });
+        };
+        query.addListenerForSingleValueEvent(videoListListener);
         return root;
     }
 

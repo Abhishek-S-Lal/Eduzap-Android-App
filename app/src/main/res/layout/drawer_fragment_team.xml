@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground"
-    tools:context=".ui.drawer.contact_us.ContactUsFragment">
+    tools:context=".ui.drawer.team.TeamFragment">
 
 
     <LinearLayout
@@ -21,127 +21,6 @@
             android:paddingBottom="20dp"
             android:src="@drawable/eduzap_logo_small" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/about_background"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Support"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="start"
-                android:padding="8dp"
-                android:text="Send your suggestions/feedback at:"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/support_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="start"
-                android:padding="8dp"
-                android:text="contact@eduzap.com"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="@color/about_background"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Follow Us"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp">
-
-                <ImageView
-                    android:layout_width="52dp"
-                    android:layout_height="53dp"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_facebook" />
-
-                <TextView
-                    android:id="@+id/facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="53dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="facebook.com/eduzapsolutions"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp">
-
-                <ImageView
-                    android:layout_width="52dp"
-                    android:layout_height="53dp"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_instagram" />
-
-                <TextView
-                    android:id="@+id/instagram"
-                    android:layout_width="wrap_content"
-                    android:layout_height="53dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="instagram.com/eduzap.in"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp">
-
-                <ImageView
-                    android:layout_width="52dp"
-                    android:layout_height="53dp"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_telegram" />
-
-                <TextView
-                    android:id="@+id/telegram"
-                    android:layout_width="wrap_content"
-                    android:layout_height="53dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="https://t.me/eduzap_telegram"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
 
         <TextView
             android:layout_width="match_parent"
@@ -150,10 +29,11 @@
             android:background="@color/about_background"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Contact Team"
+            android:text="Team Members"
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <!--        team member 1-->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -185,7 +65,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="HAREESH KRISHNAN H"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
                         android:textSize="20sp"
@@ -195,7 +74,6 @@
                         android:id="@+id/team_member_1_position"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Co-Founder, CEO"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:textStyle="italic" />
@@ -207,7 +85,6 @@
                         android:layout_gravity="left"
                         android:layout_marginTop="10dp"
                         android:padding="5dp"
-                        android:text="Email:hareeshkrish2747@gmail.com "
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -217,7 +94,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:paddingStart="5dp"
-                        android:text="Mob: 7907318472"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -229,6 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp" />
 
+        <!--        team member 2-->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -260,7 +137,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="ANURAJ A R"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
                         android:textSize="20sp"
@@ -270,7 +146,7 @@
                         android:id="@+id/team_member_2_position"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Co-Founder, CTO"
+
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:textStyle="italic" />
@@ -282,7 +158,6 @@
                         android:layout_gravity="left"
                         android:layout_marginTop="10dp"
                         android:padding="5dp"
-                        android:text="Email:\nanurajgecbh@gmail.com "
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -292,7 +167,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:padding="5dp"
-                        android:text="Mob: 9074649665 "
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -304,6 +178,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp" />
 
+        <!--        team member 3-->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -336,7 +211,6 @@
                         android:layout_height="wrap_content"
 
                         android:gravity="center"
-                        android:text="syam  lal"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
                         android:textSize="20sp"
@@ -346,7 +220,6 @@
                         android:id="@+id/team_member_3_position"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chief Educator"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:textStyle="italic" />
@@ -358,7 +231,6 @@
                         android:layout_gravity="left"
                         android:layout_marginTop="10dp"
                         android:padding="5dp"
-                        android:text="Email:\nsyam1441@gmail.com "
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -368,7 +240,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:padding="5dp"
-                        android:text="Mob: 9544631030"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -380,6 +251,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp" />
 
+        <!--        team member 4-->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -412,7 +284,6 @@
                         android:layout_height="wrap_content"
 
                         android:gravity="center"
-                        android:text="Fazil Shaji"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
                         android:textSize="20sp"
@@ -423,7 +294,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Media and Promotion Executive"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:textStyle="italic" />
@@ -435,7 +305,6 @@
                         android:layout_gravity="left"
                         android:layout_marginTop="10dp"
                         android:padding="5dp"
-                        android:text="Email:\nfazilfaaz4143@gmail.com"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -445,7 +314,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:padding="5dp"
-                        android:text="Mob: 9744677370"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 

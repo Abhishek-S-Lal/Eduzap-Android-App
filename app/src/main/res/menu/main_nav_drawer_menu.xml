@@ -29,19 +29,21 @@
                     android:id="@+id/nav_goto_youtube"
                     android:icon="@drawable/ic_youtube"
                     android:title="@string/drawer_go_to_youtube" />
+                <item
+                    android:id="@+id/nav_contact_us"
+                    android:icon="@drawable/ic_baseline_people_24"
+                    android:title="@string/drawer_team" />
+
+                <item
+                    android:id="@+id/nav_developers"
+                    android:icon="@drawable/ic_programmer"
+                    android:title="@string/drawer_developers" />
 
                 <item
                     android:id="@+id/nav_share_now"
                     android:icon="@drawable/ic_share"
                     android:title="@string/drawer_share_now" />
-                <item
-                    android:id="@+id/nav_developers"
-                    android:icon="@drawable/ic_programmer"
-                    android:title="@string/drawer_developers" />
-                <item
-                    android:id="@+id/nav_contact_us"
-                    android:icon="@drawable/ic_baseline_contact_support"
-                    android:title="@string/drawer_contact_us" />
+
             </menu>
         </item>
     </group>

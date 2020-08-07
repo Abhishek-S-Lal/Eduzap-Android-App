@@ -23,8 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eduzap.android.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -33,12 +33,13 @@ public class DocumentsFragment extends Fragment {
 
     private DocumentsViewModel documentsViewModel;
 
-    DatabaseReference reference;
+    Query query;
     ArrayList<DocumentListModel> list;
     DocumentListAdapter adapter;
     RecyclerView documentRecyclerView;
     ProgressBar progressBar;
     TextView documentName, documentDescription;
+    private ValueEventListener documentListListener;
 
     private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
         @Override
@@ -80,8 +81,8 @@ public class DocumentsFragment extends Fragment {
         documentRecyclerView = root.findViewById(R.id.documentsRecyclerView);
         documentRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        reference = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("documents");
-        reference.addValueEventListener(new ValueEventListener() {
+        query = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("documents");
+        documentListListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list = new ArrayList<DocumentListModel>();
@@ -112,7 +113,8 @@ public class DocumentsFragment extends Fragment {
                 Toast.makeText(getContext(), "Oops.... Something is wrong", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
-        });
+        };
+        query.addListenerForSingleValueEvent(documentListListener);
 
         getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 

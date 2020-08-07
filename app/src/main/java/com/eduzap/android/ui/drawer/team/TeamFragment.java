@@ -1,11 +1,10 @@
-package com.eduzap.android.ui.drawer.contact_us;
+package com.eduzap.android.ui.drawer.team;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,10 +20,9 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ContactUsFragment extends Fragment {
+public class TeamFragment extends Fragment {
 
-    private ContactUsViewModel contact_us_ViewModel;
-    private TextView supportEmailTV, facebookTV, instagramTV, telegramTV;
+    private TeamViewModel contact_us_ViewModel;
     private CircleImageView member1IV, member2IV, member3IV, member4IV;
     private TextView member1NameTV, member1PositionTV, member1EmailTV, member1MobileTV;
     private TextView member2NameTV, member2PositionTV, member2EmailTV, member2MobileTV;
@@ -34,38 +32,10 @@ public class ContactUsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         contact_us_ViewModel =
-                ViewModelProviders.of(this).get(ContactUsViewModel.class);
-        View root = inflater.inflate(R.layout.drawer_fragment_contact_us, container, false);
-
-        supportEmailTV = root.findViewById(R.id.support_email);
-        facebookTV = root.findViewById(R.id.facebook);
-        instagramTV = root.findViewById(R.id.instagram);
-        telegramTV = root.findViewById(R.id.telegram);
+                ViewModelProviders.of(this).get(TeamViewModel.class);
+        View root = inflater.inflate(R.layout.drawer_fragment_team, container, false);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference contactUsRef = ref.child("ContactUs");
-
-        contactUsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                String email = dataSnapshot.child("support_mail").getValue(true).toString();
-                String facebook = dataSnapshot.child("facebook").getValue(true).toString();
-                String instagram = dataSnapshot.child("instagram").getValue(true).toString();
-                String telegram = dataSnapshot.child("telegram").getValue(true).toString();
-                supportEmailTV.setText(email);
-                facebookTV.setText(facebook);
-                instagramTV.setText(instagram);
-                telegramTV.setText(telegram);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Error loading contact details", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         //team member 1
         DatabaseReference team_member1_Ref = ref.child("Team").child("0");
         member1NameTV = root.findViewById(R.id.team_member_1_name);

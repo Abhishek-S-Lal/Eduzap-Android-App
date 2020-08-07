@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.drawer.home.HomeFragment">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
@@ -43,14 +44,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Courses"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"
                 android:layout_marginLeft="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:padding="5dp"
-                android:textSize="18sp" />
+                android:text="Courses"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
@@ -64,22 +65,26 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/coursesRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="@color/colorBackground" />
 
+
         </LinearLayout>
+
 
         <ProgressBar
             android:id="@+id/homeProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone" />
+            android:layout_centerVertical="true" />
 
     </RelativeLayout>
 
 </ScrollView>
+
+
+

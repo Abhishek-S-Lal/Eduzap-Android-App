@@ -1,13 +1,13 @@
-package com.eduzap.android.ui.drawer.contact_us;
+package com.eduzap.android.ui.drawer.team;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ContactUsViewModel extends ViewModel {
+public class TeamViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
-    public ContactUsViewModel() {
+    public TeamViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is contact us fragment");
     }
