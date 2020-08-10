@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDevelopers() {
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        final View developerPopupView = getLayoutInflater().inflate(R.layout.developer_popup, null);
+        final View developerPopupView = getLayoutInflater().inflate(R.layout.developer_abhishek_popup, null);
 
         dialogBuilder.setView(developerPopupView);
         dialog = dialogBuilder.create();
