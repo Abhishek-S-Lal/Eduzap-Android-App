@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
-
+//    AlertDialog dialog;
     SliderView sliderView;
     IFirebaseLoadListener iFirebaseLoadListener;
     RecyclerView courses_recycler_view;
@@ -57,15 +57,13 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view = root.findViewById(R.id.coursesRecyclerView);
         courses_recycler_view.setHasFixedSize(true);
         courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+//        dialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
                     // signed in
-                    loadImageSlider();
-
-                    loadCoursesAndSubjects();
 
                 } else {
                     //signed out
@@ -81,7 +79,8 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         };
         firebaseAuth = FirebaseAuth.getInstance();
 
-
+        loadCoursesAndSubjects();
+        loadImageSlider();
         return root;
     }
 
@@ -134,26 +133,27 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
         //Init
         myData = FirebaseDatabase.getInstance().getReference("Courses");
-        //dialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
+
         iFirebaseLoadListener = this;
 
-        //dialog.show();
+//        dialog.show();
         progressBar.setVisibility(View.VISIBLE);
 
         coursesAndSubjectsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<CoursesModel> coursesModels = new ArrayList<>();
+                List<CoursesModel> coursesList = new ArrayList<>();
 
-                for (DataSnapshot groupSnapShot : dataSnapshot.getChildren()) {
-                    CoursesModel coursesModel = new CoursesModel();
-                    coursesModel.setCourseTitle(groupSnapShot.child("CourseTitle").getValue(true).toString());
+                //for traversing all the child of the reference
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    CoursesModel coursesItem = new CoursesModel();
+                    coursesItem.setCourseTitle(snapshot.child("CourseTitle").getValue(true).toString());
                     GenericTypeIndicator<ArrayList<SubjectsModel>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<SubjectsModel>>() {
                     };
-                    coursesModel.setSubjectItem(groupSnapShot.child("SubjectItem").getValue(genericTypeIndicator));
-                    coursesModels.add(coursesModel);
+                    coursesItem.setSubjectItem(snapshot.child("SubjectItem").getValue(genericTypeIndicator));
+                    coursesList.add(coursesItem);
                 }
-                iFirebaseLoadListener.onFirebaseLoadSuccess(coursesModels);
+                iFirebaseLoadListener.onFirebaseLoadSuccess(coursesList);
             }
 
             @Override
@@ -169,7 +169,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         CoursesAdapter adapter = new CoursesAdapter(this.getActivity(), coursesModelList);
         courses_recycler_view.setAdapter(adapter);
 
-        //dialog.dismiss();
+//        dialog.dismiss();
         progressBar.setVisibility(View.GONE);
 
     }
@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
     @Override
     public void FirebaseLoadFailed(String message) {
         Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
-        //dialog.dismiss();
+//        dialog.dismiss();
         progressBar.setVisibility(View.GONE);
 
     }

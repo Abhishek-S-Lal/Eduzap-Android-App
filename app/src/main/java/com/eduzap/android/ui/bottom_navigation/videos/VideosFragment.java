@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.eduzap.android.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,13 +26,11 @@ import java.util.ArrayList;
 public class VideosFragment extends Fragment {
 
     private VideosViewModel videosViewModel;
-    Query query;
-    ArrayList<VideoListModel> list;
-    VideoListAdapter adapter;
-    RecyclerView videoRecyclerView;
-    ProgressBar progressBar;
-    TextView videoName;
-    ReadMoreTextView videoDescription;
+    private RecyclerView videoRecyclerView;
+    private ProgressBar progressBar;
+    private Query query;
+    private ArrayList<VideoListModel> list;
+    private VideoListAdapter adapter;
     private ValueEventListener videoListListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -49,9 +46,6 @@ public class VideosFragment extends Fragment {
         String coursePosition = Integer.toString(cPosition);
 
 
-        videoName = root.findViewById(R.id.video_heading);
-        videoDescription = root.findViewById(R.id.video_descrip);
-
         progressBar = root.findViewById(R.id.homeProgressBar);
         progressBar.setVisibility(View.VISIBLE);
         videoRecyclerView = root.findViewById(R.id.videosRecyclerView);
@@ -63,16 +57,16 @@ public class VideosFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list = new ArrayList<VideoListModel>();
 
-                for (DataSnapshot groupSnapShot : dataSnapshot.getChildren()) {
-                    VideoListModel videoListModel = new VideoListModel();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    VideoListModel videoListItem = new VideoListModel();
 
-                    videoListModel.setVideoName(groupSnapShot.child("name").getValue(true).toString());
-                    videoListModel.setVideoDescription(groupSnapShot.child("description").getValue(true).toString());
-                    videoListModel.setVideoThumbnail(groupSnapShot.child("thumbnail").getValue(true).toString());
-                    videoListModel.setVideoUrl(groupSnapShot.child("url").getValue(true).toString());
+                    videoListItem.setVideoName(snapshot.child("name").getValue(true).toString());
+                    videoListItem.setVideoDescription(snapshot.child("description").getValue(true).toString());
+                    videoListItem.setVideoThumbnail(snapshot.child("thumbnail").getValue(true).toString());
+                    videoListItem.setVideoUrl(snapshot.child("url").getValue(true).toString());
 
 
-                    list.add(videoListModel);
+                    list.add(videoListItem);
                 }
                 adapter = new VideoListAdapter(getActivity(), list, cPosition, sPosition);
 

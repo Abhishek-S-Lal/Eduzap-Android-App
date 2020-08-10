@@ -1,12 +1,13 @@
 package com.eduzap.android.ui.drawer.home.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eduzap.android.R;
 import com.eduzap.android.ui.drawer.home.Model.CoursesModel;
 import com.eduzap.android.ui.drawer.home.Model.SubjectsModel;
+import com.eduzap.android.ui.drawer.subject_details.SubjectDetailsActivity;
 
 import java.util.List;
 
@@ -52,7 +54,12 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.MyViewHo
         holder.btn_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Button More : " + holder.CourseTitle.getText(), Toast.LENGTH_SHORT).show();
+                Bundle b = new Bundle();
+                Intent intent = new Intent(context, SubjectDetailsActivity.class);
+                intent.putExtra("courseName", courseTitle);
+                intent.putExtra("coursePosition", position);
+                intent.putExtras(b);
+                context.startActivity(intent);
             }
         });
     }

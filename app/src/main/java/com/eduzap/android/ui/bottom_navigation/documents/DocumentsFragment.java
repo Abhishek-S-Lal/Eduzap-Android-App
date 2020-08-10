@@ -87,17 +87,19 @@ public class DocumentsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list = new ArrayList<DocumentListModel>();
 
-                for (DataSnapshot groupSnapShot : dataSnapshot.getChildren()) {
-                    DocumentListModel documentListModel = new DocumentListModel();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    DocumentListModel documentListItem = new DocumentListModel();
 
-                    documentListModel.setDocumentName(groupSnapShot.child("name").getValue(true).toString());
-                    documentListModel.setDocumentDescription(groupSnapShot.child("description").getValue(true).toString());
-                    documentListModel.setDocumentUrl(groupSnapShot.child("url").getValue(true).toString());
+                    documentListItem.setDocumentName(snapshot.child("name").getValue(true).toString());
+                    documentListItem.setDocumentDescription(snapshot.child("description").getValue(true).toString());
+                    documentListItem.setDocumentUrl(snapshot.child("url").getValue(true).toString());
 
 
-                    list.add(documentListModel);
+                    list.add(documentListItem);
                 }
                 adapter = new DocumentListAdapter(getActivity(), list);
+                adapter.notifyDataSetChanged();
+
                 if (adapter.getItemCount() == 0) {
                     TextView emptyTextViw = root.findViewById(R.id.emptyDocumentMsg);
                     emptyTextViw.setText(R.string.empty_documents_message);

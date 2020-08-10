@@ -35,7 +35,7 @@ public class Signup_Form extends AppCompatActivity {
     String gender = "";
     ProgressBar progressBar;
 
-    FirebaseDatabase rootNode;
+    FirebaseDatabase database;
     DatabaseReference reference;
 
     @Override
@@ -214,8 +214,8 @@ public class Signup_Form extends AppCompatActivity {
         }
 
         UserHelperClass helperClass = new UserHelperClass(name, username, email, phoneNo, gender);
-        rootNode = FirebaseDatabase.getInstance();
-        reference = rootNode.getReference("Users");
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("Users");
         reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(helperClass);
     }
 

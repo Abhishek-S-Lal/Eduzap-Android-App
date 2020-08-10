@@ -33,6 +33,7 @@
 
 
                 <TextView
+                    android:id="@+id/about_title_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/about_background"
@@ -44,13 +45,14 @@
 
 
                 <com.borjabravo.readmoretextview.ReadMoreTextView
+                    android:id="@+id/about_description_1"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/EDUzap_About"
+
                     android:textSize="17sp"
                     app:colorClickableText="@color/colorPrimaryDark"
                     app:trimCollapsedText="Show less"
@@ -60,13 +62,13 @@
                     app:trimMode="trimModeLength" />
 
                 <ImageView
+                    android:id="@+id/about_image_1"
                     android:layout_width="match_parent"
-                    android:layout_height="230dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/eduzap_about" />
+                    android:scaleType="centerCrop" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -83,6 +85,7 @@
 
 
                 <TextView
+                    android:id="@+id/about_title_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/about_background"
@@ -94,13 +97,14 @@
 
 
                 <com.borjabravo.readmoretextview.ReadMoreTextView
+                    android:id="@+id/about_description_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/Method_of_Teaching"
+
                     android:textSize="17sp"
                     app:colorClickableText="@color/colorPrimaryDark"
                     app:trimCollapsedText="Show less"
@@ -109,13 +113,13 @@
                     app:trimMode="trimModeLength" />
 
                 <ImageView
+                    android:id="@+id/about_image_2"
                     android:layout_width="match_parent"
-                    android:layout_height="232dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/eduzapcover" />
+                    android:scaleType="centerCrop" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -153,6 +157,7 @@
                 android:gravity="start"
                 android:padding="8dp"
                 android:text="contact@eduzap.com"
+                android:autoLink="email"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -170,9 +175,30 @@
                 android:background="@color/about_background"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="Follow Us"
+                android:text="Connect With Us"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp">
+
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="53dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_internet" />
+
+                <TextView
+                    android:id="@+id/website"
+                    android:layout_width="wrap_content"
+                    android:layout_height="53dp"
+                    android:autoLink="web"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -191,7 +217,7 @@
                     android:layout_height="53dp"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="facebook.com/eduzapsolutions"
+                    android:autoLink="web"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -212,7 +238,7 @@
                     android:layout_height="53dp"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="instagram.com/eduzap.in"
+                    android:autoLink="web"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -233,7 +259,28 @@
                     android:layout_height="53dp"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="https://t.me/eduzap_telegram"
+                    android:autoLink="web"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp">
+
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="53dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_twitter" />
+
+                <TextView
+                    android:id="@+id/twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="53dp"
+                    android:autoLink="web"
+                    android:gravity="center"
+                    android:padding="8dp"
                     android:textSize="16sp" />
             </LinearLayout>
 

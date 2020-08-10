@@ -104,7 +104,7 @@ public class VideoPlayer extends AppCompatActivity {
                 }
 
                 adapter = new VideoPlayerListAdapter(VideoPlayer.this, list, videoName, videoDescription, activityYouTubePlayerView, lifecycle, player, videoId);
-
+                adapter.notifyDataSetChanged();
 
                 videoName.setText(list.get(vPosition).getVideoName());
                 videoDescription.setText(list.get(vPosition).getVideoDescription());

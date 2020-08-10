@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
 
+        <activity android:name=".ui.drawer.subject_details.SubjectDetailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.drawer.MainActivity" />
+        </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
