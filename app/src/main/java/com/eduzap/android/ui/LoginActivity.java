@@ -1,5 +1,5 @@
 
-package com.eduzap.android;
+package com.eduzap.android.ui;
 
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.eduzap.android.R;
 import com.eduzap.android.ui.drawer.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

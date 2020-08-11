@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="550dp"
+    android:layout_gravity="center"
+    android:layout_margin="8dp">
+
+    <ImageView
+        android:id="@+id/close_popup"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_baseline_close" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/developerIV"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/developerabhishek" />
+
+    <TextView
+        android:id="@+id/developer_nameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/developerIV"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:textStyle="bold"
+        android:text="Abhishek S Lal"
+        android:textSize="24dp" />
+
+    <TextView
+        android:id="@+id/developer_descTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/developer_nameTV"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="22dp"
+        android:gravity="center"
+        android:text="Freelance Developer"
+        android:textSize="18dp"
+        android:textStyle="italic" />
+
+    <LinearLayout
+        android:id="@+id/dev_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/developer_descTV"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="18dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="52dp"
+                android:layout_height="53dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_gmail" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="53dp"
+                android:autoLink="email"
+                android:padding="8dp"
+                android:gravity="start"
+                android:text="abhishekslaltvm@gmail.com"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="52dp"
+                android:layout_height="53dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_linkedin" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="53dp"
+                android:autoLink="web"
+                android:padding="8dp"
+                android:gravity="start"
+                android:text="linkedin.com/in/abhishekslal"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="52dp"
+                android:layout_height="53dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_facebook" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="53dp"
+                android:autoLink="web"
+                android:padding="8dp"
+                android:gravity="start"
+                android:text="facebook.com/abhishekslal"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

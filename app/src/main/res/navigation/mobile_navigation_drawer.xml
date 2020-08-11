@@ -9,7 +9,7 @@
         android:id="@+id/nav_home"
         android:name="com.eduzap.android.ui.drawer.home.HomeFragment"
         android:label="@string/drawer_first"
-        tools:layout="@layout/drawer_fragment_home" />
+        tools:layout="@layout/drawer_fragment_home"></fragment>
 
     <fragment
         android:id="@+id/nav_downloads"
@@ -34,5 +34,10 @@
         android:name="com.eduzap.android.ui.drawer.team.TeamFragment"
         android:label="@string/drawer_team"
         tools:layout="@layout/drawer_fragment_team" />
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="com.eduzap.android.ui.bottom_navigation.videos.VideosFragment"
+        android:label="bottom_nav_fragment_videos"
+        tools:layout="@layout/bottom_nav_fragment_videos" />
 
 </navigation>

@@ -1,17 +1,20 @@
 package com.eduzap.android.ui.drawer.team;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.drawer.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeamFragment extends Fragment {
 
-    private TeamViewModel contact_us_ViewModel;
+    private TextView team_titleTV;
     private CircleImageView member1IV, member2IV, member3IV, member4IV;
     private TextView member1NameTV, member1PositionTV, member1EmailTV, member1MobileTV;
     private TextView member2NameTV, member2PositionTV, member2EmailTV, member2MobileTV;
@@ -32,9 +35,27 @@ public class TeamFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        contact_us_ViewModel =
-                ViewModelProviders.of(this).get(TeamViewModel.class);
-        View root = inflater.inflate(R.layout.drawer_fragment_team, container, false);
+        View root;
+        if (!InternetConnection.checkConnection(getContext())) {
+            root = inflater.inflate(R.layout.no_internet, container, false);
+            Button retry = root.findViewById(R.id.retry);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!InternetConnection.checkConnection(getContext())) {
+                        Toast.makeText(getActivity(), "No Internet", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                    }
+
+                }
+            });
+            return root;
+        }
+
+        root = inflater.inflate(R.layout.drawer_fragment_team, container, false);
+
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         //team member 1
@@ -161,8 +182,8 @@ public class TeamFragment extends Fragment {
                 Toast.makeText(getContext(), "Error loading Team Member 4 details", Toast.LENGTH_SHORT).show();
             }
         });
-
         return root;
     }
+
 
 }

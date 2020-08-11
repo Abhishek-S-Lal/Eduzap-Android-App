@@ -1,9 +1,11 @@
 package com.eduzap.android.ui.drawer.about_us;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,9 +13,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.drawer.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,21 +26,34 @@ import com.squareup.picasso.Picasso;
 
 public class AboutUsFragment extends Fragment {
 
-    private AboutUsViewModel mViewModel;
     private TextView supportEmailTV, facebookTV, instagramTV, telegramTV, twitterTV, websiteTV;
     private TextView about_1_title, about_1_description, about_2_title, about_2_description;
     private ImageView about_1_image, about_2_image;
 
-    public static AboutUsFragment newInstance() {
-        return new AboutUsFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.drawer_fragment_about_us, container, false);
+        View root;
+        if (!InternetConnection.checkConnection(getContext())) {
+            root = inflater.inflate(R.layout.no_internet, container, false);
+            Button retry = root.findViewById(R.id.retry);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!InternetConnection.checkConnection(getContext())) {
+                        Toast.makeText(getActivity(), "No Internet", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                    }
 
-        //
+                }
+            });
+            return root;
+        }
+        root = inflater.inflate(R.layout.drawer_fragment_about_us, container, false);
+
         about_1_title = root.findViewById(R.id.about_title_1);
         about_1_description = root.findViewById(R.id.about_description_1);
         about_1_image = root.findViewById(R.id.about_image_1);
@@ -119,13 +135,6 @@ public class AboutUsFragment extends Fragment {
             }
         });
         return root;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AboutUsViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

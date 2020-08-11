@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".ui.VideoPlayer">
+    tools:context=".ui.video_player_pip.VideoPlayer">
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
         android:id="@+id/activity_youtube_player_view"
@@ -41,7 +41,7 @@
                 android:paddingBottom="5dp"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:text="Video Name"
+
                 android:textStyle="bold" />
 
             <com.borjabravo.readmoretextview.ReadMoreTextView

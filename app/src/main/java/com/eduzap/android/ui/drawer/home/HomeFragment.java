@@ -1,10 +1,12 @@
 package com.eduzap.android.ui.drawer.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -13,7 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.drawer.MainActivity;
 import com.eduzap.android.ui.drawer.home.Adapter.CoursesAdapter;
 import com.eduzap.android.ui.drawer.home.Adapter.SliderAdapter;
 import com.eduzap.android.ui.drawer.home.Interface.IFirebaseLoadListener;
@@ -36,20 +40,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
-//    AlertDialog dialog;
-    SliderView sliderView;
-    IFirebaseLoadListener iFirebaseLoadListener;
-    RecyclerView courses_recycler_view;
-    ProgressBar progressBar;
-    DatabaseReference myData, imgSliderData;
-    FirebaseAuth firebaseAuth;
+    //    AlertDialog dialog;
+    private SliderView sliderView;
+    private IFirebaseLoadListener iFirebaseLoadListener;
+    private RecyclerView courses_recycler_view;
+    private ProgressBar progressBar;
+    private DatabaseReference myData, imgSliderData;
+    private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private ValueEventListener coursesAndSubjectsListener, imageSliderListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.drawer_fragment_home, container, false);
+        View root;
+        if (!InternetConnection.checkConnection(getContext())) {
+            root = inflater.inflate(R.layout.no_internet, container, false);
+            Button retry = root.findViewById(R.id.retry);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!InternetConnection.checkConnection(getContext())) {
+                        Toast.makeText(getActivity(), "No Internet", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                    }
+
+                }
+            });
+            return root;
+        }
+
+        root = inflater.inflate(R.layout.drawer_fragment_home, container, false);
 
         //Views
         sliderView = root.findViewById(R.id.imageSlider);
@@ -83,6 +106,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         loadImageSlider();
         return root;
     }
+
 
     private void loadImageSlider() {
         imgSliderData = FirebaseDatabase.getInstance().getReference("ImageSlider");
@@ -182,15 +206,22 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
-        firebaseAuth.addAuthStateListener(authStateListener);
+        if (InternetConnection.checkConnection(getContext()) && firebaseAuth != null) {
+            firebaseAuth.addAuthStateListener(authStateListener);
+        }
+
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        firebaseAuth.removeAuthStateListener(authStateListener);
+        if (firebaseAuth != null && InternetConnection.checkConnection(getContext())) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
+        }
     }
 }

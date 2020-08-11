@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -34,7 +36,7 @@
         </provider>
 
         <activity
-            android:name=".ui.VideoPlayer"
+            android:name=".ui.video_player_pip.VideoPlayer"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
@@ -57,7 +59,7 @@
                 android:value=".ui.drawer.MainActivity" />
         </activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".ui.SplashScreenActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenStyle"
@@ -69,7 +71,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Signup_Form"
+            android:name=".ui.Signup_Form"
             android:configChanges="orientation"
             android:label="Register"
             android:screenOrientation="portrait"
@@ -82,7 +84,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.LoginActivity"
             android:configChanges="orientation"
             android:label="Log In"
             android:screenOrientation="portrait"

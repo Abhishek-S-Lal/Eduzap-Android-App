@@ -6,7 +6,7 @@
     android:layout_margin="8dp">
 
     <ImageView
-        android:id="@+id/close_popup"
+        android:id="@+id/close_popup_arjun"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentEnd="true"
@@ -20,7 +20,7 @@
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
-        android:src="@drawable/developerabhishek" />
+        android:src="@drawable/developerarjun" />
 
     <TextView
         android:id="@+id/developer_nameTV"
@@ -29,8 +29,9 @@
         android:layout_below="@id/developerIV"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
-        android:text="Abhishek S Lal"
-        android:textSize="24dp" />
+        android:text="Arjun S.G"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/developer_descTV"
@@ -39,17 +40,22 @@
         android:layout_below="@id/developer_nameTV"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="22dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="22dp"
         android:gravity="center"
-        android:text="4th Year, CSE Student at RIET, Trivandrum"
-        android:textSize="20dp" />
+        android:text="Freelance Developer"
+        android:textSize="18dp"
+        android:textStyle="italic" />
 
     <LinearLayout
+        android:id="@+id/dev_contacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/developer_descTV"
-        android:layout_margin="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="18dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -65,9 +71,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="53dp"
-                android:gravity="center"
+                android:autoLink="email"
+                android:gravity="start"
                 android:padding="8dp"
-                android:text="abhishekslal@gmail.com"
+                android:text="arjunsg13@gmail.com"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -84,9 +91,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="53dp"
-                android:gravity="center"
+                android:autoLink="web"
+                android:gravity="start"
                 android:padding="8dp"
-                android:text="linkedin.com/in/abhishekslal"
+                android:text="linkedin.com/in/arjun-s-g-7a36771ab"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -103,14 +111,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="53dp"
-                android:gravity="center"
+                android:autoLink="web"
+                android:gravity="start"
                 android:padding="8dp"
-                android:text="facebook.com/abhishekslal"
+                android:text="facebook.com/ArjunSuresh"
                 android:textSize="16sp" />
         </LinearLayout>
 
 
     </LinearLayout>
-
 
 </RelativeLayout>

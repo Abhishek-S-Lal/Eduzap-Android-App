@@ -42,7 +42,11 @@ public class SubjectDetailsAdapter extends RecyclerView.Adapter<SubjectDetailsAd
     @Override
     public void onBindViewHolder(@NonNull SubjectDetailsAdapter.MyViewHolder holder, int position) {
         holder.subjectName.setText(subjectDetailsList.get(position).getSubjectName());
-        holder.subjectDescription.setText(subjectDetailsList.get(position).getSubjectDescription());
+        if (subjectDetailsList.get(position).getSubjectDescription().equals("")) {
+            holder.subjectDescription.setVisibility(View.GONE);
+        } else {
+            holder.subjectDescription.setText(subjectDetailsList.get(position).getSubjectDescription());
+        }
         holder.teacherName.setText(subjectDetailsList.get(position).getTeacherName());
         Picasso.get().load(subjectDetailsList.get(position).getSubjectImage()).into(holder.subjectImage);
 

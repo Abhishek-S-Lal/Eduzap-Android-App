@@ -1,4 +1,4 @@
-package com.eduzap.android;
+package com.eduzap.android.ui;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -15,10 +15,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.eduzap.android.R;
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     private static int SPLASH_SCREEN = 3000;
-
 
 
     //Variables

@@ -1,5 +1,6 @@
-package com.eduzap.android.ui;
+package com.eduzap.android.ui.video_player_pip;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -7,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
+import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,32 +52,66 @@ public class VideoPlayer extends AppCompatActivity {
     YouTubePlayer player;
     Lifecycle lifecycle;
     int cPosition, sPosition, vPosition;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_video_player);
-
-        videoName = findViewById(R.id.video_heading);
-        videoDescription = findViewById(R.id.video_descrip);
-        videoPlayerProgressBar = findViewById(R.id.videoPlayerProgressBar);
-        videoPlayerProgressBar.setVisibility(View.VISIBLE);
-        videoPlayerRecyclerView = findViewById(R.id.videoPlayerRecyclerView);
-        videoPlayerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        activityYouTubePlayerView = findViewById(R.id.activity_youtube_player_view);
-        getLifecycle().addObserver(activityYouTubePlayerView);
-        initPictureInPicture(activityYouTubePlayerView);
-        lifecycle = getLifecycle();
+        context = this;
 
         cPosition = this.getIntent().getIntExtra("course_position", 0);
         sPosition = this.getIntent().getIntExtra("subject_position", 0);
         vPosition = this.getIntent().getIntExtra("video_position", 0);
         videoId = this.getIntent().getStringExtra("video_id");
 
-        startVideo();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+        //no connection
+        if (!InternetConnection.checkConnection(this)) {
+            setContentView(R.layout.no_internet);
+            Button retry = findViewById(R.id.retry);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!InternetConnection.checkConnection(context)) {
+                        Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(context, VideoPlayer.class);
+                        Bundle b = new Bundle();
+
+                        //put extra into a bundle and add to intent
+                        //get position to carry integer
+                        intent.putExtra("subject_position", sPosition);
+                        intent.putExtra("course_position", cPosition);
+                        intent.putExtra("video_position", vPosition);
+                        intent.putExtra("video_id", videoId);
+                        intent.putExtras(b);
+                        //begin activity
+                        context.startActivity(intent);
+
+                    }
+
+                }
+            });
+        } else {
+            setContentView(R.layout.activity_video_player);
+
+            videoName = findViewById(R.id.video_heading);
+            videoDescription = findViewById(R.id.video_descrip);
+            videoPlayerProgressBar = findViewById(R.id.videoPlayerProgressBar);
+            videoPlayerProgressBar.setVisibility(View.VISIBLE);
+            videoPlayerRecyclerView = findViewById(R.id.videoPlayerRecyclerView);
+            videoPlayerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            activityYouTubePlayerView = findViewById(R.id.activity_youtube_player_view);
+            getLifecycle().addObserver(activityYouTubePlayerView);
+            initPictureInPicture(activityYouTubePlayerView);
+            lifecycle = getLifecycle();
+
+            startVideo();
+        }
     }
 
     private void startVideo() {
@@ -83,7 +120,6 @@ public class VideoPlayer extends AppCompatActivity {
         String coursePosition = Integer.toString(cPosition);
 
         //hooks
-
 
         reference = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("videos");
         reference.addValueEventListener(new ValueEventListener() {

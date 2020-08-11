@@ -32,9 +32,6 @@ public class LearnActivity extends AppCompatActivity {
         //String course = getIntent().getStringExtra("course_name");
         String subject = getIntent().getStringExtra("subject_name");
 
-        int coursePosition = getIntent().getIntExtra("course_position", 0);
-        int subjectPosition = getIntent().getIntExtra("subject_position", 0);
-
         setTitle(subject);
 
     }

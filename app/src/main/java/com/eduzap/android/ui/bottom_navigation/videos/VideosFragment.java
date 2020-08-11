@@ -1,20 +1,28 @@
 package com.eduzap.android.ui.bottom_navigation.videos;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.drawer.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,27 +33,47 @@ import java.util.ArrayList;
 
 public class VideosFragment extends Fragment {
 
-    private VideosViewModel videosViewModel;
     private RecyclerView videoRecyclerView;
     private ProgressBar progressBar;
     private Query query;
     private ArrayList<VideoListModel> list;
     private VideoListAdapter adapter;
     private ValueEventListener videoListListener;
+    private Context context;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        videosViewModel =
-                ViewModelProviders.of(this).get(VideosViewModel.class);
-        final View root = inflater.inflate(R.layout.bottom_nav_fragment_videos, container, false);
 
+        context = this.getContext();
         int cPosition = getActivity().getIntent().getIntExtra("course_position", 0);
         int sPosition = getActivity().getIntent().getIntExtra("subject_position", 0);
+        String subject = getActivity().getIntent().getStringExtra("subject_name");
 
         String subjectPosition = Integer.toString(sPosition);
         String coursePosition = Integer.toString(cPosition);
 
+        final View root = inflater.inflate(R.layout.bottom_nav_fragment_videos, container, false);
 
+        //no connection
+        if (!InternetConnection.checkConnection(getContext())) {
+            LinearLayout noInternet = root.findViewById(R.id.videos_no_internet);
+            noInternet.setVisibility(View.VISIBLE);
+            Button retry = root.findViewById(R.id.videos_retry);
+            retry.setText("Go Back");
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
+            return root;
+        }
+
+        //videos fragment continues
         progressBar = root.findViewById(R.id.homeProgressBar);
         progressBar.setVisibility(View.VISIBLE);
         videoRecyclerView = root.findViewById(R.id.videosRecyclerView);
@@ -72,7 +100,11 @@ public class VideosFragment extends Fragment {
 
                 //when the subject contains no videos
                 if (adapter.getItemCount() == 0) {
+                    RelativeLayout container = root.findViewById(R.id.container);
+                    container.setBackgroundColor(Color.WHITE);
                     TextView emptyTextViw = root.findViewById(R.id.emptyVideosMsg);
+                    ImageView emptyIV = root.findViewById(R.id.empty_video_img);
+                    emptyIV.setVisibility(View.VISIBLE);
                     emptyTextViw.setText(R.string.empty_videos_message);
                     emptyTextViw.setVisibility(View.VISIBLE);
                 }
@@ -88,6 +120,8 @@ public class VideosFragment extends Fragment {
             }
         };
         query.addListenerForSingleValueEvent(videoListListener);
+
+
         return root;
     }
 
