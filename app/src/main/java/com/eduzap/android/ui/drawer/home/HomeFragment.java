@@ -1,5 +1,6 @@
 package com.eduzap.android.ui.drawer.home;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -39,8 +40,10 @@ import com.smarteist.autoimageslider.SliderView;
 import java.util.ArrayList;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
-    //    AlertDialog dialog;
+    private AlertDialog dialog;
     private SliderView sliderView;
     private IFirebaseLoadListener iFirebaseLoadListener;
     private RecyclerView courses_recycler_view;
@@ -65,6 +68,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
                     } else {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
+                        requireActivity().finish();
                     }
 
                 }
@@ -80,7 +84,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view = root.findViewById(R.id.coursesRecyclerView);
         courses_recycler_view.setHasFixedSize(true);
         courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-//        dialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
+        dialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -160,7 +164,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
         iFirebaseLoadListener = this;
 
-//        dialog.show();
+        dialog.show();
         progressBar.setVisibility(View.VISIBLE);
 
         coursesAndSubjectsListener = new ValueEventListener() {
@@ -193,7 +197,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         CoursesAdapter adapter = new CoursesAdapter(this.getActivity(), coursesModelList);
         courses_recycler_view.setAdapter(adapter);
 
-//        dialog.dismiss();
+        dialog.dismiss();
         progressBar.setVisibility(View.GONE);
 
     }
@@ -201,7 +205,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
     @Override
     public void FirebaseLoadFailed(String message) {
         Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
-//        dialog.dismiss();
+        dialog.dismiss();
         progressBar.setVisibility(View.GONE);
 
     }

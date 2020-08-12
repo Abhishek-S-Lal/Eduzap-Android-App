@@ -151,8 +151,7 @@ public class MainActivity extends AppCompatActivity {
         String email_address = "abhishekslaltvm@gmail.com";
         String linkedin = "https://www.linkedin.com/in/abhishekslal";
         String github = "https://github.com/Abhishek-S-Lal";
-        String facebook = "https://www.facebook.com/abhishekslal";
-        String whatsapp = " https://wa.me/919447173706";
+        String whatsapp = "https://wa.me/918921440482";
 
         TextView descriptionTV = developerAbhiPopupView.findViewById(R.id.developer_descTV);
         descriptionTV.setText(subtitle);
@@ -207,22 +206,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageView facebookIV = developerAbhiPopupView.findViewById(R.id.abhi_fb);
-        facebookIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(facebook));
-                    startActivity(intent);
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         ImageView whatsappIV = developerAbhiPopupView.findViewById(R.id.abhi_whatsapp);
         whatsappIV.setOnClickListener(new View.OnClickListener() {
@@ -233,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
                     intent.setData(Uri.parse(whatsapp));
+
                     startActivity(intent);
                 } catch (
                         ActivityNotFoundException e) {
@@ -261,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
         String email_address = "arjunsg13@gmail.com@gmail.com";
         String linkedin = "https://www.linkedin.com/in/arjun-s-g-7a36771ab";
         String github = "https://github.com/Arjunsg13";
-        String facebook = "https://www.facebook.com/Arjun9745816141";
         String whatsapp = " https://wa.me/919745816141";
 
         TextView descriptionTV = developerArjunPopupView.findViewById(R.id.developer_descTV);
@@ -317,22 +300,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageView facebookIV = developerArjunPopupView.findViewById(R.id.arjun_fb);
-        facebookIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(facebook));
-                    startActivity(intent);
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         ImageView whatsappIV = developerArjunPopupView.findViewById(R.id.arjun_whatsapp);
         whatsappIV.setOnClickListener(new View.OnClickListener() {
@@ -346,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 } catch (
                         ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Sorry. Whatsapp connection is temporarily unavailable", Toast.LENGTH_SHORT).show();
                 }
             }
         });

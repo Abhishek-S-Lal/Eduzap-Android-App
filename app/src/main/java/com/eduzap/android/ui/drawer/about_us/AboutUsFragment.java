@@ -46,6 +46,7 @@ public class AboutUsFragment extends Fragment {
                     } else {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
+                        requireActivity().finish();
                     }
 
                 }

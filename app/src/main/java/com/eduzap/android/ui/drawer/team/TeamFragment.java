@@ -47,6 +47,7 @@ public class TeamFragment extends Fragment {
                     } else {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
+                        requireActivity().finish();
                     }
 
                 }

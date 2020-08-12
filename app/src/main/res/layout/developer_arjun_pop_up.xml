@@ -18,7 +18,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="25dp"
         android:src="@drawable/developerarjun" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
         android:text="Arjun S G"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/black"
         android:textSize="24dp"
         android:textStyle="bold" />
 
@@ -58,7 +58,7 @@
         android:layout_marginStart="22dp"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="22dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="25dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -88,12 +88,6 @@
                 android:padding="8dp"
                 android:src="@drawable/ic_github" />
 
-            <ImageView
-                android:id="@+id/arjun_fb"
-                android:layout_width="52dp"
-                android:layout_height="53dp"
-                android:padding="8dp"
-                android:src="@drawable/ic_facebook" />
 
             <ImageView
                 android:id="@+id/arjun_whatsapp"
