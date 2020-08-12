@@ -1,6 +1,8 @@
 package com.eduzap.android.ui.drawer;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-
+    private Context context;
     private FirebaseUser currentUser;
     private DatabaseReference userDataRef;
     private FirebaseAuth firebaseAuth;
@@ -61,8 +63,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        context = this;
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.drawer_nav_view);
@@ -142,6 +147,209 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        String subtitle = "Freelance Developer";
+        String email_address = "abhishekslaltvm@gmail.com";
+        String linkedin = "https://www.linkedin.com/in/abhishekslal";
+        String github = "https://github.com/Abhishek-S-Lal";
+        String facebook = "https://www.facebook.com/abhishekslal";
+        String whatsapp = " https://wa.me/919447173706";
+
+        TextView descriptionTV = developerAbhiPopupView.findViewById(R.id.developer_descTV);
+        descriptionTV.setText(subtitle);
+
+        ImageView gmail = developerAbhiPopupView.findViewById(R.id.abhi_gmail);
+        gmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent i = new Intent(Intent.ACTION_SENDTO);
+                    i.setData(Uri.parse("mailto:" + email_address));
+                    i.putExtra(Intent.EXTRA_SUBJECT, "Feedback/Support");
+                    startActivity(Intent.createChooser(i, "Send feedback"));
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Gmail App not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ImageView linkedinIV = developerAbhiPopupView.findViewById(R.id.abhi_linked_in);
+        linkedinIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(linkedin));
+                    startActivity(intent);
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ImageView githubIV = developerAbhiPopupView.findViewById(R.id.abhi_github);
+        githubIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(github));
+                    startActivity(intent);
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ImageView facebookIV = developerAbhiPopupView.findViewById(R.id.abhi_fb);
+        facebookIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(facebook));
+                    startActivity(intent);
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ImageView whatsappIV = developerAbhiPopupView.findViewById(R.id.abhi_whatsapp);
+        whatsappIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(whatsapp));
+                    startActivity(intent);
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private void showDeveloperArjun() {
+        View developerArjunPopupView = getLayoutInflater().inflate(R.layout.developer_arjun_pop_up, null);
+        dialogBuilder.setView(developerArjunPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        ImageView close = developerArjunPopupView.findViewById(R.id.close_popup_arjun);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        String subtitle = "Freelance Developer";
+        String email_address = "arjunsg13@gmail.com@gmail.com";
+        String linkedin = "https://www.linkedin.com/in/arjun-s-g-7a36771ab";
+        String github = "https://github.com/Arjunsg13";
+        String facebook = "https://www.facebook.com/Arjun9745816141";
+        String whatsapp = " https://wa.me/919745816141";
+
+        TextView descriptionTV = developerArjunPopupView.findViewById(R.id.developer_descTV);
+        descriptionTV.setText(subtitle);
+
+        ImageView gmail = developerArjunPopupView.findViewById(R.id.arjun_gmail);
+        gmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent i = new Intent(Intent.ACTION_SENDTO);
+                    i.setData(Uri.parse("mailto:" + email_address));
+                    i.putExtra(Intent.EXTRA_SUBJECT, "Feedback/Support");
+                    startActivity(Intent.createChooser(i, "Send feedback"));
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Gmail App not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ImageView linkedinIV = developerArjunPopupView.findViewById(R.id.arjun_linked_in);
+        linkedinIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(linkedin));
+                    startActivity(intent);
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ImageView githubIV = developerArjunPopupView.findViewById(R.id.arjun_github);
+        githubIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(github));
+                    startActivity(intent);
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ImageView facebookIV = developerArjunPopupView.findViewById(R.id.arjun_fb);
+        facebookIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(facebook));
+                    startActivity(intent);
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ImageView whatsappIV = developerArjunPopupView.findViewById(R.id.arjun_whatsapp);
+        whatsappIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(whatsapp));
+                    startActivity(intent);
+                } catch (
+                        ActivityNotFoundException e) {
+                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -174,20 +382,6 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    private void showDeveloperArjun() {
-        View developerArjunPopupView = getLayoutInflater().inflate(R.layout.developer_arjun_pop_up, null);
-        dialogBuilder.setView(developerArjunPopupView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        ImageView close = developerArjunPopupView.findViewById(R.id.close_popup_arjun);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-    }
 
     public void updateNavHeader() {
 

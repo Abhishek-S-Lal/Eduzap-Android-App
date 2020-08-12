@@ -89,6 +89,4 @@ dependencies {
     // Add the dependency for the Performance Monitoring library
     implementation 'com.google.firebase:firebase-perf:19.0.8'
 
-
-
 }
