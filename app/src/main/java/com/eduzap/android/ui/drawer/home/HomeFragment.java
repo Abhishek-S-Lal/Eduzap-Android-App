@@ -1,17 +1,21 @@
 package com.eduzap.android.ui.drawer.home;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,10 +44,8 @@ import com.smarteist.autoimageslider.SliderView;
 import java.util.ArrayList;
 import java.util.List;
 
-import dmax.dialog.SpotsDialog;
-
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
-    private AlertDialog dialog;
+    //    private AlertDialog alertDialog;
     private SliderView sliderView;
     private IFirebaseLoadListener iFirebaseLoadListener;
     private RecyclerView courses_recycler_view;
@@ -53,30 +55,11 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
     private FirebaseAuth.AuthStateListener authStateListener;
     private ValueEventListener coursesAndSubjectsListener, imageSliderListener;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root;
-        if (!InternetConnection.checkConnection(getContext())) {
-            root = inflater.inflate(R.layout.no_internet, container, false);
-            Button retry = root.findViewById(R.id.retry);
-            retry.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!InternetConnection.checkConnection(getContext())) {
-                        Toast.makeText(getActivity(), "No Internet", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        requireActivity().finish();
-                    }
-
-                }
-            });
-            return root;
-        }
-
-        root = inflater.inflate(R.layout.drawer_fragment_home, container, false);
+        View root = inflater.inflate(R.layout.drawer_fragment_home, container, false);
 
         //Views
         sliderView = root.findViewById(R.id.imageSlider);
@@ -84,7 +67,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view = root.findViewById(R.id.coursesRecyclerView);
         courses_recycler_view.setHasFixedSize(true);
         courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        dialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
+//        alertDialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -106,6 +89,10 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         };
         firebaseAuth = FirebaseAuth.getInstance();
 
+        if (!InternetConnection.checkConnection(getContext())) {
+            Toast.makeText(getContext(), "No Internet", Toast.LENGTH_SHORT).show();
+        }
+
         loadCoursesAndSubjects();
         loadImageSlider();
         return root;
@@ -114,7 +101,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
     private void loadImageSlider() {
         imgSliderData = FirebaseDatabase.getInstance().getReference("ImageSlider");
-
+        imgSliderData.keepSynced(true);
         imageSliderListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -161,10 +148,10 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
         //Init
         myData = FirebaseDatabase.getInstance().getReference("Courses");
-
+        myData.keepSynced(true);
         iFirebaseLoadListener = this;
 
-        dialog.show();
+//        alertDialog.show();
         progressBar.setVisibility(View.VISIBLE);
 
         coursesAndSubjectsListener = new ValueEventListener() {
@@ -197,7 +184,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         CoursesAdapter adapter = new CoursesAdapter(this.getActivity(), coursesModelList);
         courses_recycler_view.setAdapter(adapter);
 
-        dialog.dismiss();
+//        alertDialog.dismiss();
         progressBar.setVisibility(View.GONE);
 
     }
@@ -205,7 +192,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
     @Override
     public void FirebaseLoadFailed(String message) {
         Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
-        dialog.dismiss();
+//        alertDialog.dismiss();
         progressBar.setVisibility(View.GONE);
 
     }
@@ -219,6 +206,37 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         }
 
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main_home_options_menu, menu);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                FirebaseAuth.getInstance().signOut();
+                return true;
+
+            case R.id.action_refresh:
+                Intent intent = new Intent(this.getActivity(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

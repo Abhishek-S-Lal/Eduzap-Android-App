@@ -3,6 +3,7 @@ package com.eduzap.android.ui;
 
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
 import com.eduzap.android.ui.drawer.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,12 +35,12 @@ import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button callSignUp, loginBtn, forgotpassword;
-    ImageView image;
-    TextView sloganText, statusMsg;
-    TextInputLayout email, password;
-    ProgressBar progressBar;
-
+    private Button callSignUp, loginBtn, forgotpassword;
+    private ImageView image;
+    private TextView sloganText, statusMsg;
+    private TextInputLayout email, password;
+    private ProgressBar progressBar;
+    private Context context;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -48,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        context = this;
         //Hooks
         callSignUp = findViewById(R.id.reg_login_btn);
         image = findViewById(R.id.logo_image);
@@ -109,7 +111,12 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressBar.setVisibility(View.GONE);
                             if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Invalid Credentials\nLogin Failed!", Toast.LENGTH_LONG).show();
+                                if (!InternetConnection.checkConnection(context)) {
+                                    Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Invalid Credentials\nLogin Failed!", Toast.LENGTH_LONG).show();
+                                }
+
                             } else {
                                 if (mFirebaseAuth.getCurrentUser().isEmailVerified()) {
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);

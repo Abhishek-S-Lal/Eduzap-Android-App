@@ -5,11 +5,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -52,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference userDataRef;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    CheckInternetConnection connectionChecker = new CheckInternetConnection();
-    //tap back for multiple fragments
-    //uncomment after implementing fragment switching without restarting
+//    private CheckInternetConnection connectionChecker = new CheckInternetConnection();
     boolean doubleBackToExitPressedOnce = false;
     private boolean connectionAvailable = true;
 
@@ -320,26 +315,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_home_options_menu, menu);
-        return true;
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
-                return true;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 
     @Override
@@ -440,12 +416,18 @@ public class MainActivity extends AppCompatActivity {
 //            @Override
 //            public void onConnectionChanged(boolean isConnectionAvailable) {
 //                if(connectionAvailable && !isConnectionAvailable) {
-//                    Toast.makeText(MainActivity.this, "Internet connection unavailable!", Toast.LENGTH_SHORT).show();
-//                    connectionAvailable = false;
+//                    if (!InternetConnection.checkConnection(context) ) {
+//                        connectionAvailable = false;
+//                        Toast.makeText(context, "Internet connection unavailable!", Toast.LENGTH_SHORT).show();
+//                    }
+//
 //                }
 //                else if(!connectionAvailable && isConnectionAvailable) {
-//                    Toast.makeText(MainActivity.this, "Internet connection is back again.", Toast.LENGTH_SHORT).show();
-//                    connectionAvailable = true;
+//                    if (InternetConnection.checkConnection(context)){
+//                        connectionAvailable = true;
+//                        Toast.makeText(MainActivity.this, "Internet connection is back again.", Toast.LENGTH_SHORT).show();
+//                    }
+//
 //                }
 //            }
 //        });

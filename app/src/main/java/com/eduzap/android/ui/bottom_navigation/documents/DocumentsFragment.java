@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
-import com.eduzap.android.ui.drawer.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -89,9 +88,8 @@ public class DocumentsFragment extends Fragment {
             retry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, MainActivity.class);
-                    startActivity(intent);
-
+                    //this will result in go back
+                    getActivity().finish();
                 }
             });
 

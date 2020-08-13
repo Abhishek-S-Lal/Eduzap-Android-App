@@ -1,7 +1,6 @@
 package com.eduzap.android.ui.bottom_navigation.videos;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
-import com.eduzap.android.ui.drawer.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -64,9 +62,8 @@ public class VideosFragment extends Fragment {
             retry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, MainActivity.class);
-                    startActivity(intent);
-
+                    //this will result in go back
+                    getActivity().finish();
                 }
             });
 
@@ -125,4 +122,11 @@ public class VideosFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!InternetConnection.checkConnection(getContext())) {
+            Toast.makeText(getContext(), "No Internet", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
