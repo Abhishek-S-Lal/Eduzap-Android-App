@@ -1,19 +1,28 @@
 package com.eduzap.android.ui.drawer.home;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
+import com.eduzap.android.ui.drawer.MainActivity;
 import com.eduzap.android.ui.drawer.home.Adapter.CoursesAdapter;
 import com.eduzap.android.ui.drawer.home.Adapter.SliderAdapter;
 import com.eduzap.android.ui.drawer.home.Interface.IFirebaseLoadListener;
@@ -36,15 +45,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
-//    AlertDialog dialog;
-    SliderView sliderView;
-    IFirebaseLoadListener iFirebaseLoadListener;
-    RecyclerView courses_recycler_view;
-    ProgressBar progressBar;
-    DatabaseReference myData, imgSliderData;
-    FirebaseAuth firebaseAuth;
+    //    private AlertDialog alertDialog;
+    private SliderView sliderView;
+    private IFirebaseLoadListener iFirebaseLoadListener;
+    private RecyclerView courses_recycler_view;
+    private ProgressBar progressBar;
+    private DatabaseReference myData, imgSliderData;
+    private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private ValueEventListener coursesAndSubjectsListener, imageSliderListener;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +67,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view = root.findViewById(R.id.coursesRecyclerView);
         courses_recycler_view.setHasFixedSize(true);
         courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-//        dialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
+//        alertDialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -79,14 +89,19 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         };
         firebaseAuth = FirebaseAuth.getInstance();
 
+        if (!InternetConnection.checkConnection(getContext())) {
+            Toast.makeText(getContext(), "No Internet", Toast.LENGTH_SHORT).show();
+        }
+
         loadCoursesAndSubjects();
         loadImageSlider();
         return root;
     }
 
+
     private void loadImageSlider() {
         imgSliderData = FirebaseDatabase.getInstance().getReference("ImageSlider");
-
+        imgSliderData.keepSynced(true);
         imageSliderListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -133,10 +148,10 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
         //Init
         myData = FirebaseDatabase.getInstance().getReference("Courses");
-
+        myData.keepSynced(true);
         iFirebaseLoadListener = this;
 
-//        dialog.show();
+//        alertDialog.show();
         progressBar.setVisibility(View.VISIBLE);
 
         coursesAndSubjectsListener = new ValueEventListener() {
@@ -169,7 +184,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         CoursesAdapter adapter = new CoursesAdapter(this.getActivity(), coursesModelList);
         courses_recycler_view.setAdapter(adapter);
 
-//        dialog.dismiss();
+//        alertDialog.dismiss();
         progressBar.setVisibility(View.GONE);
 
     }
@@ -177,20 +192,58 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
     @Override
     public void FirebaseLoadFailed(String message) {
         Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
-//        dialog.dismiss();
+//        alertDialog.dismiss();
         progressBar.setVisibility(View.GONE);
 
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
-        firebaseAuth.addAuthStateListener(authStateListener);
+        if (InternetConnection.checkConnection(getContext()) && firebaseAuth != null) {
+            firebaseAuth.addAuthStateListener(authStateListener);
+        }
+
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main_home_options_menu, menu);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                FirebaseAuth.getInstance().signOut();
+                return true;
+
+            case R.id.action_refresh:
+                Intent intent = new Intent(this.getActivity(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        firebaseAuth.removeAuthStateListener(authStateListener);
+        if (firebaseAuth != null && InternetConnection.checkConnection(getContext())) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.eduzap.android.ui;
+package com.eduzap.android.ui.video_player_pip;
 
 import android.content.Context;
 import android.view.LayoutInflater;

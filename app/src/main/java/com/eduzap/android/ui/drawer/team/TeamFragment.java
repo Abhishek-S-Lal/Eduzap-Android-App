@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeamFragment extends Fragment {
 
-    private TeamViewModel contact_us_ViewModel;
+    private TextView team_titleTV;
     private CircleImageView member1IV, member2IV, member3IV, member4IV;
     private TextView member1NameTV, member1PositionTV, member1EmailTV, member1MobileTV;
     private TextView member2NameTV, member2PositionTV, member2EmailTV, member2MobileTV;
@@ -32,13 +32,14 @@ public class TeamFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        contact_us_ViewModel =
-                ViewModelProviders.of(this).get(TeamViewModel.class);
-        View root = inflater.inflate(R.layout.drawer_fragment_team, container, false);
+        View root;
+        root = inflater.inflate(R.layout.drawer_fragment_team, container, false);
+
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         //team member 1
         DatabaseReference team_member1_Ref = ref.child("Team").child("0");
+        team_member1_Ref.keepSynced(true);
         member1NameTV = root.findViewById(R.id.team_member_1_name);
         member1PositionTV = root.findViewById(R.id.team_member_1_position);
         member1EmailTV = root.findViewById(R.id.team_member_1_email);
@@ -71,6 +72,7 @@ public class TeamFragment extends Fragment {
 
         //team member 2
         DatabaseReference team_member2_Ref = ref.child("Team").child("1");
+        team_member2_Ref.keepSynced(true);
         member2NameTV = root.findViewById(R.id.team_member_2_name);
         member2PositionTV = root.findViewById(R.id.team_member_2_position);
         member2EmailTV = root.findViewById(R.id.team_member_2_email);
@@ -102,6 +104,7 @@ public class TeamFragment extends Fragment {
 
         //team member 3
         DatabaseReference team_member3_Ref = ref.child("Team").child("2");
+        team_member3_Ref.keepSynced(true);
         member3NameTV = root.findViewById(R.id.team_member_3_name);
         member3PositionTV = root.findViewById(R.id.team_member_3_position);
         member3EmailTV = root.findViewById(R.id.team_member_3_email);
@@ -133,6 +136,7 @@ public class TeamFragment extends Fragment {
 
         //team member 4
         DatabaseReference team_member4_Ref = ref.child("Team").child("3");
+        team_member4_Ref.keepSynced(true);
         member4NameTV = root.findViewById(R.id.team_member_4_name);
         member4PositionTV = root.findViewById(R.id.team_member_4_position);
         member4EmailTV = root.findViewById(R.id.team_member_4_email);
@@ -162,7 +166,12 @@ public class TeamFragment extends Fragment {
             }
         });
 
+        if (!InternetConnection.checkConnection(getContext())) {
+            Toast.makeText(getContext(), "No Internet", Toast.LENGTH_SHORT).show();
+        }
+
         return root;
     }
+
 
 }

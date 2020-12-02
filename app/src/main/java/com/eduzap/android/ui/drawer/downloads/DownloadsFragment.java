@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,8 +45,8 @@ public class DownloadsFragment extends Fragment {
         checkStorageAccessPermission();
 
         View root = inflater.inflate(R.layout.drawer_fragment_downloads, container, false);
+
         downloadsRecyclerView = root.findViewById(R.id.download_recycler_view);
-        emptyTextViw = root.findViewById(R.id.emptyDownloadMsg);
 
         downloadsRecyclerView.setHasFixedSize(true);
         downloadsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -55,12 +56,11 @@ public class DownloadsFragment extends Fragment {
         downloadsRecyclerView.setItemViewCacheSize(20);
         downloadsRecyclerView.setNestedScrollingEnabled(false);
 
-
         load_Directory_Files(folder);
         int item_count = get_files_count(folder);
         if (item_count == 0) {
-            emptyTextViw.setText(R.string.empty_downloads_message);
-            emptyTextViw.setVisibility(View.VISIBLE);
+            LinearLayout emptyDownloads = root.findViewById(R.id.empty_downloads);
+            emptyDownloads.setVisibility(View.VISIBLE);
         }
 
         downloadsAdapter = new DownloadsAdapter(this.getActivity(), DocumentsList);

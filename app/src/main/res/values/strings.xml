@@ -21,7 +21,7 @@
     <string name="drawer_go_to_youtube">Go to Youtube</string>
     <string name="drawer_share_now">Share Now</string>
     <string name="drawer_developers">Developers</string>
-    <string name="drawer_team">Team</string>
+    <string name="drawer_team">Our Team</string>
 
     <string name="media_and_promotion">Media And Promotion</string>
     <string name="chief_educator">Chief Educator</string>
@@ -29,10 +29,12 @@
     <string name="dev_arjun_s_g">Arjun S.G</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="empty_documents_message">Documents coming soon</string>
+    <string name="empty_documents_message">Documents coming soon...</string>
     <string name="empty_videos_message">Videos coming soon…</string>
     <string name="dev_abhishek_s_lal">ABHISHEK S LAL</string>
     <string name="terms_of_use">By Signing In You Are Agreeing To EDUzap\'s Terms of Use and Privacy Policy</string>
     <string name="empty_downloads_message">Oops...You have no downloads right now.</string>
+    <string name="method_of_teaching">Keeping teaching methods fresh is integral to getting students engaged in their studies and educational videos are a fantastic way of achieving this. These are designed with primary input from educators and curriculum developers, or shown in educational research to be an effective learning tool.</string>
+    <string name="about_description">EDUzap, an educational platform providing video lectures through Youtube channels, social media for open discussions, space for expressing creativity through channel Blog. Offering effective learning programs for competitive aspirants and engineering students. Teaching methods implemented prior to primary input from educational professionals and curriculum developers.</string>
 
 </resources>
