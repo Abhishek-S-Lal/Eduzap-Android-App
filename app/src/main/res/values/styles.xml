@@ -17,12 +17,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="MyButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">#FF4D4D</item>
-        <item name="colorButtonNormal">#ED3B3B</item>
-
-    </style>
-
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

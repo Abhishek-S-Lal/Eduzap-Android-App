@@ -50,9 +50,9 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:inputType="text"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -66,10 +66,10 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -83,9 +83,9 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:inputType="text"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:transitionName="email_tran" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,9 +100,9 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:inputType="number"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -117,9 +117,9 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:inputType="textPassword"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:transitionName="password_tran" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -131,25 +131,25 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:text="Gender"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
                 <RadioButton
                     android:id="@+id/radio_male"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="18dp"
                     android:text="Male"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
                 <RadioButton
                     android:id="@+id/radio_female"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="15dp"
                     android:text="Female"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
             </RadioGroup>
 

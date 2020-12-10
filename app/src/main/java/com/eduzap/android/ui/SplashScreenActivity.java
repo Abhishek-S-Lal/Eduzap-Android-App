@@ -2,6 +2,7 @@ package com.eduzap.android.ui;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -43,6 +44,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         image = findViewById(R.id.splash_photo);
         slogan = findViewById(R.id.textView1);
         version = findViewById(R.id.textView2);
+
+        try {
+            String vName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            String versionName = "Version: "+ vName;
+            version.setText(versionName);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //Set animation to elements
         image.setAnimation(topAnim);

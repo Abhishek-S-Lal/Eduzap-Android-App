@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -157,11 +159,24 @@ public class LoginActivity extends AppCompatActivity {
         forgotpassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText resetMail = new EditText(v.getContext());
                 AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
+
+                final EditText resetMail = new EditText(v.getContext());
+                resetMail.setSingleLine();
+
+                FrameLayout container = new FrameLayout(context);
+                FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+                params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+                resetMail.setLayoutParams(params);
+                container.addView(resetMail);
+
                 passwordResetDialog.setTitle("Reset Password");
-                passwordResetDialog.setMessage("Enter your registered email to recieve password reset link.");
-                passwordResetDialog.setView(resetMail);
+                passwordResetDialog.setMessage("Enter your registered email to receive password reset link.");
+                passwordResetDialog.setView(container);
+                resetMail.setTextSize(18);
+                resetMail.setMinimumHeight(48);
+
 
 
                 passwordResetDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {

@@ -50,9 +50,9 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:inputType="textEmailAddress"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:transitionName="email_tran" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -68,10 +68,10 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:transitionName="password_tran" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,17 +121,6 @@
                 android:gravity="center"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="100dp"
-                android:gravity="center"
-                android:layout_gravity="bottom"
-                android:minLines="3"
-                android:text="@string/terms_of_use" />
-
 
         </LinearLayout>
 
