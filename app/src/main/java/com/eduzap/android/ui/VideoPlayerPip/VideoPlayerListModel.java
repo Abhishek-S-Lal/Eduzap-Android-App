@@ -1,4 +1,4 @@
-package com.eduzap.android.ui.video_player_pip;
+package com.eduzap.android.ui.VideoPlayerPip;
 
 public class VideoPlayerListModel {
     private String videoName, videoDescription, videoUrl, videoThumbnail;

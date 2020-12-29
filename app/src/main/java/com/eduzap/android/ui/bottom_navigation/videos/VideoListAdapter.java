@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eduzap.android.R;
 import com.eduzap.android.ui.drawer.home.Interface.IItemClickListener;
-import com.eduzap.android.ui.video_player_pip.VideoPlayer;
+import com.eduzap.android.ui.VideoPlayerPip.VideoPlayer;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

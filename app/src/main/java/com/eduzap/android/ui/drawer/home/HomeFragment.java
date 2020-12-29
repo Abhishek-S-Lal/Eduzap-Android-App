@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view = root.findViewById(R.id.coursesRecyclerView);
         courses_recycler_view.setHasFixedSize(true);
         courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        courses_recycler_view.setNestedScrollingEnabled(false);
 //        alertDialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {

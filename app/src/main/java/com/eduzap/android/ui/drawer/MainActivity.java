@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.eduzap.android.InternetConnection;
 import com.eduzap.android.R;
 import com.eduzap.android.ui.LoginActivity;
+import com.eduzap.android.ui.VideoPlayerPip.VideoPlayer;
 import com.eduzap.android.ui.drawer.home.UserHelperClass;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,11 +39,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private Context context;
@@ -52,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 //    private CheckInternetConnection connectionChecker = new CheckInternetConnection();
     boolean doubleBackToExitPressedOnce = false;
     private boolean connectionAvailable = true;
+
+    String abhi_email_address, abhi_whatsapp, abhi_subtitle, abhi_github, abhi_linkedin, abhi_imageUrl;
+    String arjun_email_address, arjun_whatsapp, arjun_subtitle, arjun_github, arjun_linkedin, arjun_imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.setType("text/plain");
-                    i.putExtra(Intent.EXTRA_SUBJECT, "Eduzap");
-                    i.putExtra(Intent.EXTRA_TEXT, "Hey there!\nI am using Eduzap to understand and learn complex engineering concepts easily.\nDownload it now from playstore: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
+                    i.putExtra(Intent.EXTRA_SUBJECT, "EDUzap");
+                    i.putExtra(Intent.EXTRA_TEXT, "Hey there!\nI am using EDUzap to understand and learn complex engineering concepts easily.\nDownload it now from playstore: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
                     startActivity(Intent.createChooser(i, "Share With"));
                     return true;
                 } else if (id == R.id.nav_developers) {
@@ -138,87 +146,128 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+            }
+        });
+
+        ImageView next = developerAbhiPopupView.findViewById(R.id.abhishek_next);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
                 showDeveloperArjun();
             }
         });
 
-        String subtitle = "Freelance Developer";
-        String email_address = "abhishekslaltvm@gmail.com";
-        String linkedin = "https://www.linkedin.com/in/abhishekslal";
-        String github = "https://github.com/Abhishek-S-Lal";
-        String whatsapp = "https://wa.me/918921440482";
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference developer_Ref = ref.child("Developers").child("abhishek");
+        developer_Ref.keepSynced(true);
 
-        TextView descriptionTV = developerAbhiPopupView.findViewById(R.id.developer_descTV);
-        descriptionTV.setText(subtitle);
-
-        ImageView gmail = developerAbhiPopupView.findViewById(R.id.abhi_gmail);
-        gmail.setOnClickListener(new View.OnClickListener() {
+        developer_Ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                try {
-                    Intent i = new Intent(Intent.ACTION_SENDTO);
-                    i.setData(Uri.parse("mailto:" + email_address));
-                    i.putExtra(Intent.EXTRA_SUBJECT, "Feedback/Support");
-                    startActivity(Intent.createChooser(i, "Send feedback"));
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Gmail App not found", Toast.LENGTH_SHORT).show();
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                abhi_email_address = dataSnapshot.child("email").getValue(true).toString();
+                abhi_whatsapp = dataSnapshot.child("whatsapp").getValue(true).toString();
+                abhi_subtitle = dataSnapshot.child("subtitle").getValue(true).toString();
+                abhi_github = dataSnapshot.child("github").getValue(true).toString();
+                abhi_linkedin = dataSnapshot.child("linkedin").getValue(true).toString();
+                abhi_imageUrl = dataSnapshot.child("imageUrl").getValue(true).toString();
+
+                CircleImageView proImg = developerAbhiPopupView.findViewById(R.id.developerAbhiIV);
+                final ProgressBar progressView = developerAbhiPopupView.findViewById(R.id.developerAbhiPV);
+                Picasso.get().load(abhi_imageUrl).into(proImg, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+
+                TextView descriptionTV = developerAbhiPopupView.findViewById(R.id.developer_descTV);
+                descriptionTV.setText(abhi_subtitle);
+
+                ImageView gmail = developerAbhiPopupView.findViewById(R.id.abhi_gmail);
+                gmail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent i = new Intent(Intent.ACTION_SENDTO);
+                            i.setData(Uri.parse("mailto:" + abhi_email_address));
+                            i.putExtra(Intent.EXTRA_SUBJECT, "Feedback/Support");
+                            startActivity(Intent.createChooser(i, "Send feedback"));
+                        } catch (
+                                ActivityNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "Gmail App not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                ImageView linkedinIV = developerAbhiPopupView.findViewById(R.id.abhi_linked_in);
+                linkedinIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setData(Uri.parse(abhi_linkedin));
+                            startActivity(intent);
+                        } catch (
+                                ActivityNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                ImageView githubIV = developerAbhiPopupView.findViewById(R.id.abhi_github);
+                githubIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setData(Uri.parse(abhi_github));
+                            startActivity(intent);
+                        } catch (
+                                ActivityNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                ImageView whatsappIV = developerAbhiPopupView.findViewById(R.id.abhi_whatsapp);
+                whatsappIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setData(Uri.parse(abhi_whatsapp));
+
+                            startActivity(intent);
+                        } catch (
+                                ActivityNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(context, "Error loading Developer details", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
 
-        ImageView linkedinIV = developerAbhiPopupView.findViewById(R.id.abhi_linked_in);
-        linkedinIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(linkedin));
-                    startActivity(intent);
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
-        ImageView githubIV = developerAbhiPopupView.findViewById(R.id.abhi_github);
-        githubIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(github));
-                    startActivity(intent);
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        ImageView whatsappIV = developerAbhiPopupView.findViewById(R.id.abhi_whatsapp);
-        whatsappIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(whatsapp));
-
-                    startActivity(intent);
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
     }
 
@@ -236,86 +285,125 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String subtitle = "Freelance Developer";
-        String email_address = "arjunsg13@gmail.com@gmail.com";
-        String linkedin = "https://www.linkedin.com/in/arjun-s-g-7a36771ab";
-        String github = "https://github.com/Arjunsg13";
-        String whatsapp = " https://wa.me/919745816141";
-
-        TextView descriptionTV = developerArjunPopupView.findViewById(R.id.developer_descTV);
-        descriptionTV.setText(subtitle);
-
-        ImageView gmail = developerArjunPopupView.findViewById(R.id.arjun_gmail);
-        gmail.setOnClickListener(new View.OnClickListener() {
+        ImageView prev = developerArjunPopupView.findViewById(R.id.arjun_prev);
+        prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    Intent i = new Intent(Intent.ACTION_SENDTO);
-                    i.setData(Uri.parse("mailto:" + email_address));
-                    i.putExtra(Intent.EXTRA_SUBJECT, "Feedback/Support");
-                    startActivity(Intent.createChooser(i, "Send feedback"));
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Gmail App not found", Toast.LENGTH_SHORT).show();
-                }
+                dialog.dismiss();
+                showDeveloperAbhi();
             }
         });
 
-        ImageView linkedinIV = developerArjunPopupView.findViewById(R.id.arjun_linked_in);
-        linkedinIV.setOnClickListener(new View.OnClickListener() {
+        //
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference developer_Ref = ref.child("Developers").child("arjun");
+        developer_Ref.keepSynced(true);
+
+        developer_Ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(linkedin));
-                    startActivity(intent);
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                arjun_email_address = dataSnapshot.child("email").getValue(true).toString();
+                arjun_whatsapp = dataSnapshot.child("whatsapp").getValue(true).toString();
+                arjun_subtitle = dataSnapshot.child("subtitle").getValue(true).toString();
+                arjun_github = dataSnapshot.child("github").getValue(true).toString();
+                arjun_linkedin = dataSnapshot.child("linkedin").getValue(true).toString();
+                arjun_imageUrl = dataSnapshot.child("imageUrl").getValue(true).toString();
+
+                CircleImageView proImg = developerArjunPopupView.findViewById(R.id.developerArjunIV);
+                final ProgressBar progressView = developerArjunPopupView.findViewById(R.id.developerArjunPV);
+                Picasso.get().load(arjun_imageUrl).into(proImg, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+
+                TextView descriptionTV = developerArjunPopupView.findViewById(R.id.developer_arjun_descTV);
+                descriptionTV.setText(arjun_subtitle);
+
+                ImageView gmail = developerArjunPopupView.findViewById(R.id.arjun_gmail);
+                gmail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent i = new Intent(Intent.ACTION_SENDTO);
+                            i.setData(Uri.parse("mailto:" + arjun_email_address));
+                            i.putExtra(Intent.EXTRA_SUBJECT, "Feedback/Support");
+                            startActivity(Intent.createChooser(i, "Send feedback"));
+                        } catch (
+                                ActivityNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "Gmail App not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                ImageView linkedinIV = developerArjunPopupView.findViewById(R.id.arjun_linked_in);
+                linkedinIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setData(Uri.parse(arjun_linkedin));
+                            startActivity(intent);
+                        } catch (
+                                ActivityNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                ImageView githubIV = developerArjunPopupView.findViewById(R.id.arjun_github);
+                githubIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setData(Uri.parse(arjun_github));
+                            startActivity(intent);
+                        } catch (
+                                ActivityNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+                ImageView whatsappIV = developerArjunPopupView.findViewById(R.id.arjun_whatsapp);
+                whatsappIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setData(Uri.parse(arjun_whatsapp));
+                            startActivity(intent);
+                        } catch (
+                                ActivityNotFoundException e) {
+                            Toast.makeText(MainActivity.this, "Sorry. Whatsapp connection is temporarily unavailable", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(context, "Error loading Developer details", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
-
-        ImageView githubIV = developerArjunPopupView.findViewById(R.id.arjun_github);
-        githubIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(github));
-                    startActivity(intent);
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        ImageView whatsappIV = developerArjunPopupView.findViewById(R.id.arjun_whatsapp);
-        whatsappIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(whatsapp));
-                    startActivity(intent);
-                } catch (
-                        ActivityNotFoundException e) {
-                    Toast.makeText(MainActivity.this, "Sorry. Whatsapp connection is temporarily unavailable", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        //
     }
-
-
-
 
 
     @Override
@@ -440,7 +528,6 @@ public class MainActivity extends AppCompatActivity {
         if (firebaseAuth != null && InternetConnection.checkConnection(getApplicationContext())) {
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
-
     }
 
 }

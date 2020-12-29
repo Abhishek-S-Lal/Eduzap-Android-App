@@ -56,18 +56,24 @@ public class AboutUsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String email = dataSnapshot.child("support_mail").getValue(true).toString();
-                String facebook = dataSnapshot.child("facebook").getValue(true).toString();
-                String instagram = dataSnapshot.child("instagram").getValue(true).toString();
-                String telegram = dataSnapshot.child("telegram").getValue(true).toString();
-                String website = dataSnapshot.child("website").getValue(true).toString();
-                String twitter = dataSnapshot.child("twitter").getValue(true).toString();
-                supportEmailTV.setText(email);
-                facebookTV.setText(facebook);
-                instagramTV.setText(instagram);
-                telegramTV.setText(telegram);
-                websiteTV.setText(website);
-                twitterTV.setText(twitter);
+                try {
+                    String email = dataSnapshot.child("support_mail").getValue(true).toString();
+                    String facebook = dataSnapshot.child("facebook").getValue(true).toString();
+                    String instagram = dataSnapshot.child("instagram").getValue(true).toString();
+                    String telegram = dataSnapshot.child("telegram").getValue(true).toString();
+                    String website = dataSnapshot.child("website").getValue(true).toString();
+                    String twitter = dataSnapshot.child("twitter").getValue(true).toString();
+                    supportEmailTV.setText(email);
+                    facebookTV.setText(facebook);
+                    instagramTV.setText(instagram);
+                    telegramTV.setText(telegram);
+                    websiteTV.setText(website);
+                    twitterTV.setText(twitter);
+                }
+                catch (Exception e){
+                    Toast.makeText(getActivity(), "Failed Loading", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
 
@@ -81,13 +87,17 @@ public class AboutUsFragment extends Fragment {
         aboutUsRef1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try {
+                    String title = snapshot.child("title").getValue(true).toString();
+                    String description = snapshot.child("description").getValue(true).toString();
+                    String image = snapshot.child("imageUrl").getValue(true).toString();
+                    about_1_title.setText(title);
+                    about_1_description.setText(description);
+                    Picasso.get().load(image).into(about_1_image);
+                }
+                catch (Exception e){
 
-                String title = snapshot.child("title").getValue(true).toString();
-                String description = snapshot.child("description").getValue(true).toString();
-                String image = snapshot.child("imageUrl").getValue(true).toString();
-                about_1_title.setText(title);
-                about_1_description.setText(description);
-                Picasso.get().load(image).into(about_1_image);
+                }
             }
 
             @Override
@@ -100,13 +110,17 @@ public class AboutUsFragment extends Fragment {
         aboutUsRef2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try {
+                    String title = snapshot.child("title").getValue(true).toString();
+                    String description = snapshot.child("description").getValue(true).toString();
+                    String image = snapshot.child("imageUrl").getValue(true).toString();
+                    about_2_title.setText(title);
+                    about_2_description.setText(description);
+                    Picasso.get().load(image).into(about_2_image);
+                }
+                catch (Exception e){
 
-                String title = snapshot.child("title").getValue(true).toString();
-                String description = snapshot.child("description").getValue(true).toString();
-                String image = snapshot.child("imageUrl").getValue(true).toString();
-                about_2_title.setText(title);
-                about_2_description.setText(description);
-                Picasso.get().load(image).into(about_2_image);
+                }
             }
 
             @Override

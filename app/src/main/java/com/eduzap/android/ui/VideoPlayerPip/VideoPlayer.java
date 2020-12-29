@@ -1,4 +1,4 @@
-package com.eduzap.android.ui.video_player_pip;
+package com.eduzap.android.ui.VideoPlayerPip;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,12 +31,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
 
-public class VideoPlayer extends AppCompatActivity {
+public class VideoPlayer extends AppCompatActivity{
 
     private YouTubePlayerView activityYouTubePlayerView;
     static boolean active = false;
@@ -53,6 +55,7 @@ public class VideoPlayer extends AppCompatActivity {
     Lifecycle lifecycle;
     int cPosition, sPosition, vPosition;
     Context context;
+    Boolean playerReady = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +123,6 @@ public class VideoPlayer extends AppCompatActivity {
         String coursePosition = Integer.toString(cPosition);
 
         //hooks
-
         reference = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("videos");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -156,6 +158,7 @@ public class VideoPlayer extends AppCompatActivity {
                 videoPlayerRecyclerView.setAdapter(adapter);
                 videoPlayerProgressBar.setVisibility(View.GONE);
 
+
             }
 
             @Override
@@ -168,20 +171,28 @@ public class VideoPlayer extends AppCompatActivity {
 
     private void initPictureInPicture(YouTubePlayerView youTubePlayerView) {
         ImageView pictureInPictureIcon = new ImageView(this);
+        pictureInPictureIcon.setVisibility(View.GONE);
         pictureInPictureIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_picture_in_picture));
 
+        youTubePlayerView.getYouTubePlayerWhenReady(youTubePlayer -> {
+            pictureInPictureIcon.setVisibility(View.VISIBLE);
+            playerReady=true;
+        });
         pictureInPictureIcon.setOnClickListener(view -> {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 boolean supportsPIP = getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
-                if (supportsPIP)
+                if (supportsPIP) {
                     enterPictureInPictureMode();
+
+                }
 
             } else {
                 new AlertDialog.Builder(this)
                         .setTitle("Can't enter picture in picture mode")
                         .setMessage("In order to enter picture in picture mode you need a SDK version >= N.")
                         .show();
+
             }
         });
 
@@ -200,6 +211,7 @@ public class VideoPlayer extends AppCompatActivity {
             activityYouTubePlayerView.getPlayerUiController().showUi(true);
         }
     }
+
 
     @Override //this function will call when second time intending since launch mode is single task
     protected void onNewIntent(Intent intent) {
@@ -231,4 +243,29 @@ public class VideoPlayer extends AppCompatActivity {
         finishAndRemoveTask();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activityYouTubePlayerView.release();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!playerReady){
+            super.onBackPressed();
+        }
+        else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                boolean supportsPIP = getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
+                if (supportsPIP) {
+                    enterPictureInPictureMode();
+                }
+                else {
+                    super.onBackPressed();
+                }
+
+            }
+        }
+
+    }
 }

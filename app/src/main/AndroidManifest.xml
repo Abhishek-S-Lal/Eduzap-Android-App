@@ -11,7 +11,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -22,7 +22,7 @@
 
         <activity
             android:name=".ui.drawer.subject_details.SubjectDetailsActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
             <meta-data
@@ -41,7 +41,7 @@
         </provider>
 
         <activity
-            android:name=".ui.video_player_pip.VideoPlayer"
+            android:name=".ui.VideoPlayerPip.VideoPlayer"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
@@ -55,7 +55,9 @@
         </activity>
         <activity
             android:name=".ui.bottom_navigation.LearnActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:label="@string/title_activity_learn"
             android:parentActivityName=".ui.drawer.MainActivity"
             android:theme="@style/AppTheme">
@@ -65,7 +67,7 @@
         </activity>
         <activity
             android:name=".ui.SplashScreenActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenStyle"
             tools:ignore="LockedOrientationActivity">
@@ -77,20 +79,20 @@
         </activity>
         <activity
             android:name=".ui.Signup_Form"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:label="Register"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.drawer.MainActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.LoginActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:label="Log In"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,8 +45,12 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
+        try{
         holder.text_item_title.setText(subjectsModelList.get(position).getName());
-        Picasso.get().load(subjectsModelList.get(position).getImage()).into(holder.image_item);
+        Picasso.get().load(subjectsModelList.get(position).getImage()).into(holder.image_item);}
+        catch (Exception e){
+            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+        }
 
         //Don't forget to implement item click
         holder.setiItemClickListener(new IItemClickListener() {

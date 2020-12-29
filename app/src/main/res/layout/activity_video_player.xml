@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".ui.video_player_pip.VideoPlayer">
+    tools:context=".ui.VideoPlayerPip.VideoPlayer">
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
         android:id="@+id/activity_youtube_player_view"
@@ -13,17 +13,14 @@
         android:layout_height="wrap_content"
         app:showFullScreenButton="true" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/activity_youtube_player_view"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/videoHeader"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_youtube_player_view"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:orientation="vertical">
 
             <TextView
@@ -31,17 +28,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:ellipsize="end"
                 android:gravity="start"
                 android:maxLines="2"
                 android:minLines="1"
-                android:ellipsize="end"
                 android:paddingStart="10dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="5dp"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-
                 android:textStyle="bold" />
 
             <com.borjabravo.readmoretextview.ReadMoreTextView
@@ -54,18 +50,18 @@
                 android:paddingEnd="10dp"
                 app:colorClickableText="@color/colorPrimary"
                 app:showTrimExpandedText="true"
-                app:trimLines="2"
-                app:trimMode="trimModeLine" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/videoPlayerRecyclerView"
-                android:paddingTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp" />
+                app:trimLength="80"
+                app:trimMode="trimModeLength" />
 
         </LinearLayout>
-    </ScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/videoPlayerRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/videoHeader"
+        android:layout_marginBottom="5dp"
+        android:paddingTop="10dp" />
 
     <ProgressBar
         android:id="@+id/videoPlayerProgressBar"

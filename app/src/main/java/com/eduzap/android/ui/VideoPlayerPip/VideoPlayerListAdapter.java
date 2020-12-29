@@ -1,4 +1,4 @@
-package com.eduzap.android.ui.video_player_pip;
+package com.eduzap.android.ui.VideoPlayerPip;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -70,21 +71,22 @@ public class VideoPlayerListAdapter extends RecyclerView.Adapter<VideoPlayerList
                 public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                     player = youTubePlayer;
 
-                    YouTubePlayerUtils.loadOrCueVideo(
-                            youTubePlayer, lifecycle,
-                            videoId, 0f
-                    );
+                        YouTubePlayerUtils.loadOrCueVideo(
+                                youTubePlayer, lifecycle,
+                                videoId, 0f
+                        );
 
                 }
             });
 
-        } else {
-            YouTubePlayerUtils.loadOrCueVideo(
-                    player, lifecycle,
-                    videoId, 0f
-            );
-
         }
+//        else {
+//            YouTubePlayerUtils.loadOrCueVideo(
+//                    player, lifecycle,
+//                    videoId, 0f
+//            );
+//
+//        }
 
         //Don't forget to implement item click
         holder.setiItemClickListener(new IItemClickListener() {
@@ -98,23 +100,20 @@ public class VideoPlayerListAdapter extends RecyclerView.Adapter<VideoPlayerList
 
 
                 if (player != null) {
-
-                    YouTubePlayerUtils.loadOrCueVideo(
-                            player, lifecycle,
-                            videoId, 0f
-                    );
-
+                        YouTubePlayerUtils.loadOrCueVideo(
+                                player, lifecycle,
+                                videoId, 0f
+                        );
                 } else {
 
                     activityYouTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                         @Override
                         public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                             player = youTubePlayer;
-
-                            YouTubePlayerUtils.loadOrCueVideo(
-                                    youTubePlayer, lifecycle,
-                                    videoId, 0f
-                            );
+                                YouTubePlayerUtils.loadOrCueVideo(
+                                        youTubePlayer, lifecycle,
+                                        videoId, 0f
+                                );
                         }
                     });
                 }

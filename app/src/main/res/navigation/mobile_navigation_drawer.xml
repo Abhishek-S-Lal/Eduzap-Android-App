@@ -9,7 +9,7 @@
         android:id="@+id/nav_home"
         android:name="com.eduzap.android.ui.drawer.home.HomeFragment"
         android:label="@string/drawer_first"
-        tools:layout="@layout/drawer_fragment_home"></fragment>
+        tools:layout="@layout/drawer_fragment_home"/>
 
     <fragment
         android:id="@+id/nav_downloads"

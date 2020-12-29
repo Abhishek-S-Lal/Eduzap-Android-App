@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:paddingBottom="20dp"
-            android:src="@drawable/eduzap_logo_small" />
+            android:src="@drawable/eduzaplogo" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
