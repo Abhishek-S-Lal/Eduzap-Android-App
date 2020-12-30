@@ -2,13 +2,21 @@ package com.eduzap.android.ui.drawer.home.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.eduzap.android.R;
 import com.eduzap.android.ui.drawer.home.Model.SliderModel;
 import com.smarteist.autoimageslider.SliderViewAdapter;
@@ -16,13 +24,17 @@ import com.smarteist.autoimageslider.SliderViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.callback.Callback;
+
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
 
     private Context context;
+    private ProgressBar progressBar;
     private List<SliderModel> mSliderModels = new ArrayList<>();
 
-    public SliderAdapter(Context context) {
+    public SliderAdapter(Context context, ProgressBar progressBar) {
         this.context = context;
+        this.progressBar = progressBar;
     }
 
     public void renewItems(List<SliderModel> sliderModels) {
@@ -54,8 +66,21 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         viewHolder.textViewDescription.setText(sliderModel.getDescription());
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);
+        progressBar.setVisibility(View.VISIBLE);
         Glide.with(viewHolder.itemView)
                 .load(sliderModel.getImageUrl())
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);
 

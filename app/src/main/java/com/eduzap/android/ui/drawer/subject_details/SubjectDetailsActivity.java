@@ -87,11 +87,15 @@ public class SubjectDetailsActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         SubjectDetailsModel subjectDetailsListItem = new SubjectDetailsModel();
 
-                        subjectDetailsListItem.setSubjectName(snapshot.child("name").getValue(true).toString());
-                        subjectDetailsListItem.setSubjectDescription(snapshot.child("description").getValue(true).toString());
-                        subjectDetailsListItem.setTeacherName(snapshot.child("teacherName").getValue(true).toString());
-                        subjectDetailsListItem.setSubjectImage(snapshot.child("image").getValue(true).toString());
+                        try {
+                            subjectDetailsListItem.setSubjectName(snapshot.child("name").getValue(true).toString());
+                            subjectDetailsListItem.setSubjectDescription(snapshot.child("description").getValue(true).toString());
+                            subjectDetailsListItem.setTeacherName(snapshot.child("teacherName").getValue(true).toString());
+                            subjectDetailsListItem.setSubjectImage(snapshot.child("image").getValue(true).toString());
 
+                        }catch (Exception e){
+                            System.out.println(e.toString());
+                        }
 
                         list.add(subjectDetailsListItem);
                     }

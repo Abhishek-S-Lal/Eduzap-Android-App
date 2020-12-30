@@ -124,7 +124,7 @@ public class VideoPlayer extends AppCompatActivity{
 
         //hooks
         reference = FirebaseDatabase.getInstance().getReference().child("Courses").child(coursePosition).child("SubjectItem").child(subjectPosition).child("videos");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list = new ArrayList<VideoPlayerListModel>();
@@ -132,17 +132,20 @@ public class VideoPlayer extends AppCompatActivity{
                 for (DataSnapshot groupSnapShot : dataSnapshot.getChildren()) {
                     VideoPlayerListModel videoPlayerListModel = new VideoPlayerListModel();
 
-                    videoPlayerListModel.setVideoName(groupSnapShot.child("name").getValue(true).toString());
-                    videoPlayerListModel.setVideoDescription(groupSnapShot.child("description").getValue(true).toString());
-                    videoPlayerListModel.setVideoThumbnail(groupSnapShot.child("thumbnail").getValue(true).toString());
-                    videoPlayerListModel.setVideoUrl(groupSnapShot.child("url").getValue(true).toString());
-
-
+                    try{
+                        videoPlayerListModel.setVideoName(groupSnapShot.child("name").getValue(true).toString());
+                        videoPlayerListModel.setVideoDescription(groupSnapShot.child("description").getValue(true).toString());
+                        videoPlayerListModel.setVideoThumbnail(groupSnapShot.child("thumbnail").getValue(true).toString());
+                        videoPlayerListModel.setVideoUrl(groupSnapShot.child("url").getValue(true).toString());
+                    }
+                    catch (Exception e){
+                        System.out.println(e.toString());
+                    }
                     list.add(videoPlayerListModel);
                 }
 
                 adapter = new VideoPlayerListAdapter(VideoPlayer.this, list, videoName, videoDescription, activityYouTubePlayerView, lifecycle, player, videoId);
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
 
                 videoName.setText(list.get(vPosition).getVideoName());
                 videoDescription.setText(list.get(vPosition).getVideoDescription());
@@ -241,6 +244,7 @@ public class VideoPlayer extends AppCompatActivity{
     protected void onStop() {
         super.onStop();
         finishAndRemoveTask();
+
     }
 
     @Override

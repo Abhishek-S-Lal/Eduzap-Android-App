@@ -114,10 +114,14 @@ public class DocumentsFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     DocumentListModel documentListItem = new DocumentListModel();
 
-                    documentListItem.setDocumentName(snapshot.child("name").getValue(true).toString());
-                    documentListItem.setDocumentDescription(snapshot.child("description").getValue(true).toString());
-                    documentListItem.setDocumentUrl(snapshot.child("url").getValue(true).toString());
+                    try {
+                        documentListItem.setDocumentName(snapshot.child("name").getValue(true).toString());
+                        documentListItem.setDocumentDescription(snapshot.child("description").getValue(true).toString());
+                        documentListItem.setDocumentUrl(snapshot.child("url").getValue(true).toString());
 
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                    }
 
                     list.add(documentListItem);
                 }

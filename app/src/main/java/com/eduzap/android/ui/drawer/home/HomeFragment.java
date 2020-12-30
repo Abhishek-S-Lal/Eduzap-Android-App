@@ -1,5 +1,7 @@
 package com.eduzap.android.ui.drawer.home;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -45,7 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
-    //    private AlertDialog alertDialog;
+//        private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
     private SliderView sliderView;
     private IFirebaseLoadListener iFirebaseLoadListener;
     private RecyclerView courses_recycler_view;
@@ -69,6 +72,9 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         courses_recycler_view.setNestedScrollingEnabled(false);
 //        alertDialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
+        progressDialog = new ProgressDialog(this.getActivity());
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.setCancelable(false);
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -110,12 +116,17 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 
                 for (DataSnapshot groupSnapShot : snapshot.getChildren()) {
                     SliderModel sliderModel = new SliderModel();
-                    sliderModel.setDescription(groupSnapShot.child("description").getValue(true).toString());
-                    sliderModel.setImageUrl(groupSnapShot.child("imageUrl").getValue(true).toString());
+                    try {
+                        sliderModel.setDescription(groupSnapShot.child("description").getValue(true).toString());
+                        sliderModel.setImageUrl(groupSnapShot.child("imageUrl").getValue(true).toString());
+
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                    }
 
                     list.add(sliderModel);
                 }
-                SliderAdapter adapter = new SliderAdapter(getContext());
+                SliderAdapter adapter = new SliderAdapter(getContext(), progressBar);
                 adapter.renewItems(list);
 
                 sliderView.setSliderAdapter(adapter);
@@ -142,6 +153,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
                 Toast.makeText(getContext(), "Error loading..", Toast.LENGTH_SHORT).show();
             }
         };
+
         imgSliderData.addListenerForSingleValueEvent(imageSliderListener);
     }
 
@@ -153,7 +165,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         iFirebaseLoadListener = this;
 
 //        alertDialog.show();
-        progressBar.setVisibility(View.VISIBLE);
+        progressDialog.show();
 
         coursesAndSubjectsListener = new ValueEventListener() {
             @Override
@@ -163,10 +175,16 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
                 //for traversing all the child of the reference
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     CoursesModel coursesItem = new CoursesModel();
-                    coursesItem.setCourseTitle(snapshot.child("CourseTitle").getValue(true).toString());
-                    GenericTypeIndicator<ArrayList<SubjectsModel>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<SubjectsModel>>() {
-                    };
-                    coursesItem.setSubjectItem(snapshot.child("SubjectItem").getValue(genericTypeIndicator));
+                    try {
+                        coursesItem.setCourseTitle(snapshot.child("CourseTitle").getValue(true).toString());
+                        GenericTypeIndicator<ArrayList<SubjectsModel>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<SubjectsModel>>() {
+                        };
+                        coursesItem.setSubjectItem(snapshot.child("SubjectItem").getValue(genericTypeIndicator));
+                    }
+                    catch (Exception e){
+                        System.out.println(e.toString());
+                    }
+
                     coursesList.add(coursesItem);
                 }
                 iFirebaseLoadListener.onFirebaseLoadSuccess(coursesList);
@@ -186,16 +204,14 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view.setAdapter(adapter);
 
 //        alertDialog.dismiss();
-        progressBar.setVisibility(View.GONE);
-
+        progressDialog.dismiss();
     }
 
     @Override
     public void FirebaseLoadFailed(String message) {
         Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
 //        alertDialog.dismiss();
-        progressBar.setVisibility(View.GONE);
-
+        progressDialog.dismiss();
     }
 
 

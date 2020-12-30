@@ -3,8 +3,10 @@ package com.eduzap.android.ui.drawer;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -55,11 +58,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
 //    private CheckInternetConnection connectionChecker = new CheckInternetConnection();
-    boolean doubleBackToExitPressedOnce = false;
+    private boolean doubleBackToExitPressedOnce = false;
     private boolean connectionAvailable = true;
+    private boolean loadingError = false;
 
-    String abhi_email_address, abhi_whatsapp, abhi_subtitle, abhi_github, abhi_linkedin, abhi_imageUrl;
-    String arjun_email_address, arjun_whatsapp, arjun_subtitle, arjun_github, arjun_linkedin, arjun_imageUrl;
+    private String abhi_email_address, abhi_whatsapp, abhi_subtitle, abhi_github, abhi_linkedin, abhi_imageUrl;
+    private String arjun_email_address, arjun_whatsapp, arjun_subtitle, arjun_github, arjun_linkedin, arjun_imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.setType("text/plain");
                     i.putExtra(Intent.EXTRA_SUBJECT, "EDUzap");
-                    i.putExtra(Intent.EXTRA_TEXT, "Hey there!\nI am using EDUzap to understand and learn complex engineering concepts easily.\nDownload it now from playstore: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
+                    i.putExtra(Intent.EXTRA_TEXT, "Hey there!\nI am using EDUzap to understand and learn complex engineering concepts easily.\nDownload it now from Play Store: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
                     startActivity(Intent.createChooser(i, "Share With"));
                     return true;
                 } else if (id == R.id.nav_developers) {
@@ -134,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDeveloperAbhi() {
+        loadingError = false;
+
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
         View developerAbhiPopupView = getLayoutInflater().inflate(R.layout.developer_abhi_popup, null);
 
@@ -175,22 +181,37 @@ public class MainActivity extends AppCompatActivity {
 
                 CircleImageView proImg = developerAbhiPopupView.findViewById(R.id.developerAbhiIV);
                 final ProgressBar progressView = developerAbhiPopupView.findViewById(R.id.developerAbhiPV);
-                Picasso.get().load(abhi_imageUrl).into(proImg, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        progressView.setVisibility(View.GONE);
-                    }
 
-                    @Override
-                    public void onError(Exception e) {
+                if (abhi_imageUrl != null){
+                    Picasso.get().load(abhi_imageUrl).into(proImg, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            progressView.setVisibility(View.GONE);
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+                }else{
+                    loadingError = true;
+                }
+
 
                 TextView descriptionTV = developerAbhiPopupView.findViewById(R.id.developer_descTV);
-                descriptionTV.setText(abhi_subtitle);
+                if (abhi_subtitle!=null){
+                    descriptionTV.setText(abhi_subtitle);
+                }else{
+                    loadingError = true;
+                }
+
 
                 ImageView gmail = developerAbhiPopupView.findViewById(R.id.abhi_gmail);
+                if (abhi_email_address==null){
+                    loadingError = true;
+                    abhi_email_address = "abhishekslaltvm@gmail.com";
+                }
                 gmail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -207,6 +228,10 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 ImageView linkedinIV = developerAbhiPopupView.findViewById(R.id.abhi_linked_in);
+                if (abhi_linkedin == null){
+                    loadingError = true;
+                    abhi_linkedin = "https://www.linkedin.com/in/abhishekslal";
+                }
                 linkedinIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -224,6 +249,10 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 ImageView githubIV = developerAbhiPopupView.findViewById(R.id.abhi_github);
+                if (abhi_github == null){
+                    loadingError = true;
+                    abhi_github = "https://github.com/Abhishek-S-Lal";
+                }
                 githubIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -241,6 +270,10 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 ImageView whatsappIV = developerAbhiPopupView.findViewById(R.id.abhi_whatsapp);
+                if (abhi_whatsapp == null){
+                    loadingError = true;
+                    abhi_whatsapp = "https://wa.me/918921440482";
+                }
                 whatsappIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -253,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         } catch (
                                 ActivityNotFoundException e) {
-                            Toast.makeText(MainActivity.this, "Some problem with your browser.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Sorry. Whatsapp connection is temporarily unavailable", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -267,11 +300,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        if (loadingError){
+            Toast.makeText(context, "Failed to load or update details.", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
     private void showDeveloperArjun() {
+        loadingError = false;
+
         View developerArjunPopupView = getLayoutInflater().inflate(R.layout.developer_arjun_pop_up, null);
         dialogBuilder.setView(developerArjunPopupView);
         dialog = dialogBuilder.create();
@@ -311,22 +348,37 @@ public class MainActivity extends AppCompatActivity {
 
                 CircleImageView proImg = developerArjunPopupView.findViewById(R.id.developerArjunIV);
                 final ProgressBar progressView = developerArjunPopupView.findViewById(R.id.developerArjunPV);
-                Picasso.get().load(arjun_imageUrl).into(proImg, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        progressView.setVisibility(View.GONE);
-                    }
 
-                    @Override
-                    public void onError(Exception e) {
+                if (arjun_imageUrl == null){
+                    loadingError = true;
+                }
+                else{
+                    Picasso.get().load(arjun_imageUrl).into(proImg, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            progressView.setVisibility(View.GONE);
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+                }
 
                 TextView descriptionTV = developerArjunPopupView.findViewById(R.id.developer_arjun_descTV);
-                descriptionTV.setText(arjun_subtitle);
+                if (arjun_subtitle != null){
+                    descriptionTV.setText(arjun_subtitle);
+                }else{
+                    loadingError = true;
+                }
+
 
                 ImageView gmail = developerArjunPopupView.findViewById(R.id.arjun_gmail);
+                if (arjun_email_address == null){
+                    loadingError = true;
+                    arjun_email_address = "arjunsg13@gmail.com@gmail.com";
+                }
                 gmail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -343,6 +395,10 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 ImageView linkedinIV = developerArjunPopupView.findViewById(R.id.arjun_linked_in);
+                if (arjun_linkedin  == null){
+                    loadingError = true;
+                    arjun_linkedin = "https://www.linkedin.com/in/arjun-s-g-7a36771ab";
+                }
                 linkedinIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -360,6 +416,10 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 ImageView githubIV = developerArjunPopupView.findViewById(R.id.arjun_github);
+                if (arjun_github == null){
+                    loadingError = true;
+                    arjun_github = "https://github.com/Arjunsg13";
+                }
                 githubIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -378,6 +438,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                 ImageView whatsappIV = developerArjunPopupView.findViewById(R.id.arjun_whatsapp);
+                if (arjun_whatsapp == null){
+                    loadingError = true;
+                    arjun_whatsapp = "https://wa.me/919745816141";
+                }
                 whatsappIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -402,7 +466,9 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        //
+        if (loadingError){
+            Toast.makeText(context, "Failed to load or update details.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -431,8 +497,10 @@ public class MainActivity extends AppCompatActivity {
                     // whenever data at this location is updated.
                     UserHelperClass userData = dataSnapshot.getValue(UserHelperClass.class);
 
-                    navUserMail.setText(userData.getEmail());
-                    navUserName.setText(userData.getName());
+                    if (userData.getEmail() != null)
+                        navUserMail.setText(userData.getEmail());
+                    if (userData.getName() != null)
+                        navUserName.setText(userData.getName());
                     //Glide to load user image
                     // Glide.with(HomeActivity.this).load(picUrl).into(navUserPic);
 
@@ -467,31 +535,11 @@ public class MainActivity extends AppCompatActivity {
             }, 2000);
         } else {
             super.onBackPressed();
+
             return;
         }
     }
 
-
-    //DOUBLE TAP BACK PRESS for activity
-//    boolean doubleBackToExitPressedOnce = false;
-//    @Override
-//    public void onBackPressed() {
-//        if (doubleBackToExitPressedOnce) {
-//            super.onBackPressed();
-//            return;
-//        }
-//
-//        this.doubleBackToExitPressedOnce = true;
-//        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-//
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                doubleBackToExitPressedOnce=false;
-//            }
-//        }, 2000);
-//    }
 
     @Override
     protected void onStart() {

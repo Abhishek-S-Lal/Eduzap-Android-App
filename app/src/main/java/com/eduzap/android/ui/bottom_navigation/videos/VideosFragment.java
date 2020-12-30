@@ -71,7 +71,7 @@ public class VideosFragment extends Fragment {
         }
 
         //videos fragment continues
-        progressBar = root.findViewById(R.id.homeProgressBar);
+        progressBar = root.findViewById(R.id.videosProgressBar);
         progressBar.setVisibility(View.VISIBLE);
         videoRecyclerView = root.findViewById(R.id.videosRecyclerView);
         videoRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -85,11 +85,14 @@ public class VideosFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     VideoListModel videoListItem = new VideoListModel();
 
-                    videoListItem.setVideoName(snapshot.child("name").getValue(true).toString());
-                    videoListItem.setVideoDescription(snapshot.child("description").getValue(true).toString());
-                    videoListItem.setVideoThumbnail(snapshot.child("thumbnail").getValue(true).toString());
-                    videoListItem.setVideoUrl(snapshot.child("url").getValue(true).toString());
-
+                    try{
+                        videoListItem.setVideoName(snapshot.child("name").getValue(true).toString());
+                        videoListItem.setVideoDescription(snapshot.child("description").getValue(true).toString());
+                        videoListItem.setVideoThumbnail(snapshot.child("thumbnail").getValue(true).toString());
+                        videoListItem.setVideoUrl(snapshot.child("url").getValue(true).toString());
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                    }
 
                     list.add(videoListItem);
                 }
@@ -112,7 +115,7 @@ public class VideosFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Oops.... Something is wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Oops.... Something went wrong", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
         };
