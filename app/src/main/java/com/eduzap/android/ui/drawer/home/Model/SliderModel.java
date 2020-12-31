@@ -1,5 +1,8 @@
 package com.eduzap.android.ui.drawer.home.Model;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class SliderModel {
     private String description;
     private String imageUrl;

@@ -1,7 +1,10 @@
 package com.eduzap.android.ui.drawer.home.Model;
 
+import androidx.annotation.Keep;
+
 import java.util.ArrayList;
 
+@Keep
 public class CoursesModel {
     private String CourseTitle;
     private ArrayList<SubjectsModel> SubjectItem;

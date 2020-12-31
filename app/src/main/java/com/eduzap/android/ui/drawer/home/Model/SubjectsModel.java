@@ -1,9 +1,12 @@
 package com.eduzap.android.ui.drawer.home.Model;
 
+import androidx.annotation.Keep;
+
 import com.eduzap.android.ui.bottom_navigation.videos.VideoListModel;
 
 import java.util.ArrayList;
 
+@Keep
 public class SubjectsModel {
     private String name, image;
 

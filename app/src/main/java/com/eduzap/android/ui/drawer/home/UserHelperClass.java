@@ -1,5 +1,8 @@
 package com.eduzap.android.ui.drawer.home;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class UserHelperClass {
     String name, username, email, phoneNo, gender;
 
