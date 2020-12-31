@@ -48,7 +48,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements IFirebaseLoadListener {
 //        private AlertDialog alertDialog;
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
     private SliderView sliderView;
     private IFirebaseLoadListener iFirebaseLoadListener;
     private RecyclerView courses_recycler_view;
@@ -72,9 +72,9 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         courses_recycler_view.setNestedScrollingEnabled(false);
 //        alertDialog = new SpotsDialog.Builder().setContext(this.getActivity()).build();
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.setCancelable(false);
+//        progressDialog = new ProgressDialog(this.getActivity());
+//        progressDialog.setMessage("Please Wait...");
+//        progressDialog.setCancelable(false);
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -165,7 +165,7 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         iFirebaseLoadListener = this;
 
 //        alertDialog.show();
-        progressDialog.show();
+//        progressDialog.show();
 
         coursesAndSubjectsListener = new ValueEventListener() {
             @Override
@@ -204,14 +204,14 @@ public class HomeFragment extends Fragment implements IFirebaseLoadListener {
         courses_recycler_view.setAdapter(adapter);
 
 //        alertDialog.dismiss();
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
     }
 
     @Override
     public void FirebaseLoadFailed(String message) {
         Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
 //        alertDialog.dismiss();
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
     }
 
 
